@@ -1,8 +1,8 @@
 import React from 'react';
 import { Layout, Table } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { HeaderPage } from './HeaderPage';
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 export const Users = ({ collapsed, toggle }) => {
   const dataSource = [
@@ -40,16 +40,7 @@ export const Users = ({ collapsed, toggle }) => {
 
   return (
     <Layout className="site-layout">
-      <Header className="site-layout-background" style={{ padding: 0 }}>
-        {React.createElement(
-          collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-          {
-            style: { color: '#fff', fontSize: '1rem', margin: '1rem' },
-            className: 'trigger',
-            onClick: toggle,
-          }
-        )}
-      </Header>
+      <HeaderPage collapsed={collapsed} toggle={toggle} />
       <Content
         className="site-layout-background"
         style={{
