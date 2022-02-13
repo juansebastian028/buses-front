@@ -1,9 +1,9 @@
-import { Sidebar } from './components/Sidebar';
 import 'antd/dist/antd.css';
+import { AppRouter } from './routes/AppRouter';
 
 function App() {
   return (
-    <Sidebar />
+    <AppRouter />
   );
 }
 
