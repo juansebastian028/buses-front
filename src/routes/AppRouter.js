@@ -10,7 +10,7 @@ export const AppRouter = () => {
 
   return (
       <BrowserRouter>
-        <Layout>
+        <Layout style={{minHeight: '100vh'}}>
           <SiderMenu collapsed={collapsed}  />
           <Routes>
             <Route
