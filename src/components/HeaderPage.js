@@ -1,13 +1,19 @@
 import React from 'react';
 import { Layout, Avatar, Row, Col, Dropdown, Menu } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined, DownOutlined } from '@ant-design/icons';
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 
 const { Header } = Layout;
 
 export const HeaderPage = ({ collapsed, toggle }) => {
   const menu = (
     <Menu>
-      <Menu.Item danger>Cerrar sesión</Menu.Item>
+      <Menu.Item key={1} danger>
+        Cerrar sesión
+      </Menu.Item>
     </Menu>
   );
   return (
@@ -25,24 +31,24 @@ export const HeaderPage = ({ collapsed, toggle }) => {
         </Col>
         <Col
           span={2}
-          xs={{ span: 8, offset: 8 }} lg={{ span: 2, offset: 18 }}
+          xs={{ span: 8, offset: 8 }}
+          lg={{ span: 2, offset: 18 }}
           style={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          
         >
           <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
             <div onClick={(e) => e.preventDefault()}>
               <Avatar
-                style={{ backgroundColor: '#f56a00', verticalAlign: 'middle', cursor: 'pointer' }}
+                style={{
+                  cursor: 'pointer',
+                }}
                 size="large"
                 gap={4}
-
-              >
-                U
-              </Avatar>
+                icon={<UserOutlined />}
+              />
             </div>
           </Dropdown>
         </Col>

@@ -1,28 +1,49 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Layout } from 'antd';
-import { Home } from '../components/Home';
-import { SiderMenu } from '../components/SiderMenu';
-import { Users } from '../components/Users';
+import { BasicLayout } from '../layout';
+import { BusRoutes } from '../pages/BusRoutes';
+import { Home } from '../pages/Home';
+import { Login } from '../pages/Login';
+import { Users } from '../pages/Users';
 export const AppRouter = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const toggle = () => setCollapsed(!collapsed);
-
   return (
-      <BrowserRouter>
-        <Layout style={{minHeight: '100vh'}}>
-          <SiderMenu collapsed={collapsed}  />
-          <Routes>
-            <Route
-              path="/"
-              element={<Home collapsed={collapsed} toggle={toggle} />}
-            />
-            <Route
-              path="users"
-              element={<Users collapsed={collapsed} toggle={toggle} />}
-            />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          exact
+          element={
+            <BasicLayout>
+              <Home />
+            </BasicLayout>
+          }
+        />
+        <Route
+          path="/users"
+          exact
+          element={
+            <BasicLayout>
+              <Users />
+            </BasicLayout>
+          }
+        />
+        <Route
+          path="/bus-routes"
+          exact
+          element={
+            <BasicLayout>
+              <BusRoutes />
+            </BasicLayout>
+          }
+        />
+        <Route
+          path="/login"
+          exact
+          element={
+              <Login />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
