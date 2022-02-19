@@ -1,5 +1,9 @@
 import React from 'react';
+import { CardBusRoute } from '../components/CardBusRoute';
+
 
 export const Home = () => {
-  return <h1>Home</h1>;
+  return (
+    <CardBusRoute />
+  );
 };

@@ -11,7 +11,10 @@ const { Header } = Layout;
 export const HeaderPage = ({ collapsed, toggle }) => {
   const menu = (
     <Menu>
-      <Menu.Item key={1} danger>
+      <Menu.Item key={1}>
+        Mi cuenta
+      </Menu.Item>
+      <Menu.Item key={2} danger>
         Cerrar sesión
       </Menu.Item>
     </Menu>

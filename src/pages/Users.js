@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Table, Button, Popconfirm, Row, Col, Modal, Form, Input,
+  Button, Popconfirm, Row, Col, Modal, Form, Input,
 } from 'antd';
+import  Table  from 'ant-responsive-table';
 import {
   clearActiveUser,
   getListUsers,
@@ -87,21 +88,29 @@ export const Users = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      showOnResponse: true,
+      showOnDesktop: true
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      showOnResponse: true,
+      showOnDesktop: true,
     },
     {
       title: 'Phone',
       dataIndex: 'phone',
       key: 'phone',
+      showOnResponse: true,
+      showOnDesktop: true,
     },
     {
       title: 'Actions',
       dataIndex: 'id',
       key: 'id',
+      showOnResponse: true,
+      showOnDesktop: true,
       render: (id, user) => (
         <>
           <Button
@@ -207,7 +216,15 @@ export const Users = () => {
           </Form.Item>
         </Form>
       </Modal>
-      <Table dataSource={users} columns={columns} rowKey="id" />
+      <Table 
+        antTableProps={{
+          rowKey: "id",
+          showHeader: true,
+          columns,
+          dataSource: users,
+          pagination: true
+        }}
+        mobileBreakPoint={768} rowKey="id" />
     </>
   );
 };
