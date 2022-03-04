@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 import { CardBusRoute } from '../components/CardBusRoute';
 
-export const Home = () => {
+export const MyFavoriteRoutes = () => {
   const busRoutes = [
     {
       _id: 1,
@@ -34,4 +34,4 @@ export const Home = () => {
       ))}
     </div>
   );
-};
+}

@@ -22,8 +22,8 @@ export const MyAccount = () => {
 		};
 	}, [userForm]);
 
-	const testOfFire = () => {
-		alert("Hola")
+	const testOfFire = (values) => {
+		console.log(values)
 	}
 
 	return (

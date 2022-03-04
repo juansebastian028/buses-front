@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
-import { UserOutlined, HomeOutlined, CarOutlined } from '@ant-design/icons';
+import { UserOutlined, HomeOutlined, CarOutlined, StarOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 const { Sider } = Layout;
@@ -25,6 +25,9 @@ export const SiderMenu = ({ collapsed }) => {
           </Menu.Item>
           <Menu.Item key="3" icon={<CarOutlined />}>
             <Link to="/bus-routes">Rutas de Buses</Link>
+          </Menu.Item>
+          <Menu.Item key="4" icon={<StarOutlined />}>
+            <Link to="/my-favorite-routes">Rutas Favoritas</Link>
           </Menu.Item>
         </Menu>
       </Sider>
