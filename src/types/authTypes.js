@@ -2,8 +2,8 @@ const LOGIN_REQUEST = 'LOGIN_REQUEST';
 const LOGIN_GOOGLE_REQUEST = 'LOGIN_GOOGLE_REQUEST';
 const LOGOUT = 'LOGOUT';
 
-export const uiTypes = {
-  UI_OPEN_MODAL,
-  UI_CLOSE_MODAL,
+export const authTypes = {
+    LOGIN_REQUEST,
+  LOGIN_GOOGLE_REQUEST,
   LOGOUT
 };
