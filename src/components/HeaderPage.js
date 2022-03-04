@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link, } from 'react-router-dom';
 import { Layout, Avatar, Row, Col, Dropdown, Menu } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import MyAccount from '../pages/MyAccount';
 
 const { Header } = Layout;
 
@@ -12,7 +14,7 @@ export const HeaderPage = ({ collapsed, toggle }) => {
   const menu = (
     <Menu>
       <Menu.Item key={1}>
-        Mi cuenta
+        <Link to="/my-account">Mi cuenta</Link>
       </Menu.Item>
       <Menu.Item key={2} danger>
         Cerrar sesión

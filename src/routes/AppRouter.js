@@ -6,6 +6,8 @@ import { BusRoutes } from '../pages/BusRoutes';
 import { Home } from '../pages/Home';
 import { Login } from '../pages/Login';
 import { Users } from '../pages/Users';
+import { MyAccount } from '../pages/MyAccount';
+import { MyFavoriteRoutes } from '../pages/MyFavoriteRoutes';
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -51,6 +53,24 @@ export const AppRouter = () => {
           exact
           element={
               <Login />
+          }
+        />
+        <Route
+          path="/my-account"
+          exact
+          element={
+            <BasicLayout>
+              <MyAccount />
+            </BasicLayout>
+          }
+        />
+        <Route
+          path="/my-favorite-routes"
+          exact
+          element={
+            <BasicLayout>
+              <MyFavoriteRoutes />
+            </BasicLayout>
           }
         />
       </Routes>
