@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { BasicLayout } from '../layout';
+import { BusRoute } from '../pages/BusRoute';
 import { BusRoutes } from '../pages/BusRoutes';
 import { Home } from '../pages/Home';
 import { Login } from '../pages/Login';
@@ -34,6 +35,15 @@ export const AppRouter = () => {
           element={
             <BasicLayout>
               <BusRoutes />
+            </BasicLayout>
+          }
+        />
+        <Route
+          path="/bus-route/:id"
+          exact
+          element={
+            <BasicLayout>
+              <BusRoute />
             </BasicLayout>
           }
         />
