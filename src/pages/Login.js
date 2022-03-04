@@ -7,6 +7,10 @@ export const Login = () => {
     console.log('Received values of form: ', values);
   };
 
+  const handleGoogleLogin = () => {
+    console.log('Google');
+  };
+
   return (
     <div className="login-container">
       <div className="login-content">
@@ -52,6 +56,19 @@ export const Login = () => {
               placeholder="Password"
             />
           </Form.Item>
+          <div className="google-btn" onClick={handleGoogleLogin}>
+            <div className="google-icon-wrapper">
+              <img
+                className="google-icon"
+                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                alt="google button"
+              />
+            </div>
+
+            <p className="btn-text">
+              <b>Continuar con Google</b>
+            </p>
+          </div>
           <Form.Item>
             <Button
               size="large"
