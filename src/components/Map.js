@@ -16,47 +16,17 @@ export const Map = () => {
   const [lng, setLng] = useState(-75.6946);
   const [lat, setLat] = useState(4.81321);
   const [zoom, setZoom] = useState(12);
-  const [wayPoints, setWayPoints] = useState({ start: null, end: null });
-  const [modeInput, setModeInput] = useState("start");
 
   useEffect(() => {
-    buildMap();
-    drawRoute();
+    loadCoords();
   }, []);
 
   useEffect(() => {
-    if (map.current && coords.length) {
-      map.current.addSource("route", {
-        type: "geojson",
-        data: {
-          type: "Feature",
-          properties: {},
-          geometry: {
-            type: "LineString",
-            coordinates: coords,
-          },
-        },
-      });
-  
-      map.current.addLayer({
-        id: "route",
-        type: "line",
-        source: "route",
-        layout: {
-          "line-join": "round",
-          "line-cap": "round",
-        },
-        paint: {
-          "line-color": "red",
-          "line-width": 5,
-        },
-      });
-
-      map.current.fitBounds([coords[0], coords[coords.length - 1]], {
-        padding: 100
-      })
+    if (coords.length) {
+      buildMap();
+      drawCoords(coords);
     }
-  }, [map, coords]);
+  }, [coords]);
 
   const buildMap = () => {
     if (map.current) return;
@@ -80,7 +50,41 @@ export const Map = () => {
     map.current.addControl(geocoder);
   };
 
-  const drawRoute = () => {
+  const drawCoords = (coords) => {
+    map.current.on("load", () => {
+      map.current.addSource("route", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates: coords,
+          },
+        },
+      });
+
+      map.current.addLayer({
+        id: "route",
+        type: "line",
+        source: "route",
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "red",
+          "line-width": 5,
+        },
+      });
+
+      map.current.fitBounds([coords[0], coords[coords.length - 1]], {
+        padding: 100,
+      });
+    });
+  };
+
+  const loadCoords = () => {
     const coords = [
       [-75.6946, 4.81321],
       [-75.7149711, 4.8362411],
