@@ -1,10 +1,18 @@
 import React from 'react';
 import { Form, Input, Button, Avatar } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import {
+  login,
+  googleLogin
+} from '../actions/auth';
 
 export const Login = () => {
+
+  const dispatch = useDispatch();
+
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+    dispatch( login(values) );   
   };
 
   const handleGoogleLogin = () => {
@@ -26,11 +34,11 @@ export const Login = () => {
           onFinish={onFinish}
         >
           <Form.Item
-            name="username"
+            name="email"
             rules={[
               {
                 required: true,
-                message: 'Please input your Username!',
+                message: 'Please input your Email!',
               },
             ]}
           >
