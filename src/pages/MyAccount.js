@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Form, Button, Input } from "antd";
+import { useSelector } from "react-redux";
 
 const initFormValues = {
 	name: "",
@@ -8,19 +9,20 @@ const initFormValues = {
 };
 
 export const MyAccount = () => {
+	const { currentUser } = useSelector((state) => state.auth);
 	const [userForm] = Form.useForm();
 
 	useEffect(() => {
 		userForm.setFieldsValue({
-			name: "Pepe Mendez",
-			email: "pepeMendez@gmail.com",
+			name: currentUser.name,
+			email: currentUser.email,
 			phone: "3115548520",
 		});
 
 		return () => {
 			userForm.resetFields();
 		};
-	}, [userForm]);
+	}, [currentUser, userForm]);
 
 	const testOfFire = (values) => {
 		console.log(values)

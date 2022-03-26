@@ -10,7 +10,7 @@ export const userReducer = (state = initialState, action) => {
     case userTypes.GET_LIST_USERS_SUCCESS:
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.users,
         isLoading: false,
       };
     case userTypes.ADD_USER_SUCCESS:

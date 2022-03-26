@@ -4,7 +4,7 @@ import { userTypes } from '../types/userTypes';
 
 function* listUsers() {
   try {
-    const URL = 'https://jsonplaceholder.typicode.com/users';
+    const URL = `${process.env.REACT_APP_API_URL}/users`;
     const response = yield call(Axios.get, URL);
     yield put({
       type: userTypes.GET_LIST_USERS_SUCCESS,
@@ -17,7 +17,7 @@ function* listUsers() {
 
 function* removeUser({ payload }) {
   try {
-    const URL = `https://jsonplaceholder.typicode.com/users/${payload}`;
+    const URL = `${process.env.REACT_APP_API_URL}/users/${payload}`;
     yield call(Axios.delete, URL);
     yield put({ type: userTypes.DELETE_USER_SUCCESS, payload });
   } catch (error) {
@@ -27,7 +27,7 @@ function* removeUser({ payload }) {
 
 function* addUser({ payload }) {
   try {
-    const URL = 'https://jsonplaceholder.typicode.com/users';
+    const URL = `${process.env.REACT_APP_API_URL}/users`;
     yield call(Axios.post, URL);
     yield put({ type: userTypes.ADD_USER_SUCCESS, payload });
   } catch (error) {
@@ -37,7 +37,7 @@ function* addUser({ payload }) {
 
 function* updateUser({ payload }) {
   try {
-    const URL = `https://jsonplaceholder.typicode.com/users/${payload.id}`;
+    const URL = `${process.env.REACT_APP_API_URL}/users/${payload.id}`;
     yield call(Axios.put, URL);
     yield put({ type: userTypes.UPDATE_USER_SUCCESS, payload });
   } catch (error) {

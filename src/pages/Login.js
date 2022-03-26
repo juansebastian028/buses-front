@@ -3,8 +3,7 @@ import { Form, Input, Button, Avatar } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
-import { login, googleLogin } from "../actions/auth";
+import { login } from "../actions/auth";
 
 export const Login = () => {
   const dispatch = useDispatch();
@@ -59,19 +58,6 @@ export const Login = () => {
               placeholder="Password"
             />
           </Form.Item>
-          {/* <div className="google-btn" onClick={handleGoogleLogin}>
-            <div className="google-icon-wrapper">
-              <img
-                className="google-icon"
-                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                alt="google button"
-              />
-            </div>
-
-            <p className="btn-text">
-              <b>Continuar con Google</b>
-            </p>
-          </div> */}
           <Form.Item>
             <Button
               size="large"

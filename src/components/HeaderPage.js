@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Layout, Avatar, Row, Col, Dropdown, Menu } from "antd";
+import { Layout, Avatar, Row, Col, Dropdown, Menu, Button } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -49,11 +49,21 @@ export const HeaderPage = ({ collapsed, toggle }) => {
         <Menu.Item key={3}>
           <GoogleLogin
             clientId={clientId}
-            buttonText="Iniciar Sesión"
+            render={(renderProps) => (
+              <div className="google-btn" onClick={renderProps.onClick}>
+                <img
+                  className="google-icon"
+                  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                  alt="google button"
+                />
+                <p className="btn-text">
+                  <b>Continuar con Google</b>
+                </p>
+              </div>
+            )}
             onSuccess={handleGoogleLogin}
             onFailure={onFailure}
             cookiePolicy={"single_host_origin"}
-            style={{ marginTop: "100px" }}
             isSignedIn={true}
           />
         </Menu.Item>
@@ -62,7 +72,18 @@ export const HeaderPage = ({ collapsed, toggle }) => {
         <Menu.Item key={4}>
           <GoogleLogout
             clientId={clientId}
-            buttonText="Cerrar Sesión"
+            render={(renderProps) => (
+              <div className="google-btn" onClick={renderProps.onClick}>
+                <img
+                  className="google-icon"
+                  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                  alt="google button"
+                />
+                <p className="btn-text">
+                  <b>Cerrar Sesión</b>
+                </p>
+              </div>
+            )}
             onLogoutSuccess={signOut}
           />
         </Menu.Item>

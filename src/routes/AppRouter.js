@@ -10,6 +10,7 @@ import { MyAccount } from "../pages/MyAccount";
 import { MyFavoriteRoutes } from "../pages/MyFavoriteRoutes";
 import { useSelector } from "react-redux";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { PublicRoute } from "./PublicRoute";
 export const AppRouter = () => {
   const { currentUser, isLogged } = useSelector((state) => state.auth);
   return (
@@ -17,19 +18,17 @@ export const AppRouter = () => {
       <Routes>
         <Route
           path="/"
-          exact
           element={
-            <BasicLayout>
-              <Home />
-            </BasicLayout>
+              <BasicLayout>
+                <Home />
+              </BasicLayout>
           }
         />
         <Route
           path="/users"
           element={
             <ProtectedRoute
-              redirectPath="/"
-              isAllowed={isLogged && currentUser.rol === "ADMIN_ROLE"}
+              isAllowed={!!isLogged && currentUser.rol === "ADMIN_ROLE"}
             >
               <BasicLayout>
                 <Users />
@@ -41,10 +40,10 @@ export const AppRouter = () => {
           path="/bus-routes"
           element={
             <ProtectedRoute
-              redirectPath="/"
               isAllowed={
-                isLogged &&
-                (currentUser.rol === "ADMIN_ROLE" || currentUser.rol === "COORDINATOR_ROLE")
+                !!isLogged &&
+                (currentUser.rol === "ADMIN_ROLE" ||
+                  currentUser.rol === "COORDINATOR_ROLE")
               }
             >
               <BasicLayout>
@@ -55,22 +54,28 @@ export const AppRouter = () => {
         />
         <Route
           path="/bus-route/:id"
-          exact
           element={
-            <BasicLayout>
-              <BusRoute />
-            </BasicLayout>
+              <BasicLayout>
+                <BusRoute />
+              </BasicLayout>
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute isAllowed={!!isLogged}>
+              <Login />
+            </PublicRoute>
+          }
+        />
         <Route
           path="/my-account"
           element={
             <ProtectedRoute
-              redirectPath="/"
               isAllowed={
-                isLogged &&
-                (currentUser.rol === "ADMIN_ROLE" || currentUser.rol === "COORDINATOR_ROLE")
+                !!isLogged &&
+                (currentUser.rol === "ADMIN_ROLE" ||
+                  currentUser.rol === "COORDINATOR_ROLE")
               }
             >
               <BasicLayout>
@@ -83,10 +88,11 @@ export const AppRouter = () => {
           path="/my-favorite-routes"
           element={
             <ProtectedRoute
-              redirectPath="/"
               isAllowed={
-                isLogged &&
-                (currentUser.rol === "USER_ROLE" || currentUser.rol === "ADMIN_ROLE" || currentUser.rol === "COORDINATOR_ROLE")
+                !!isLogged &&
+                (currentUser.rol === "USER_ROLE" ||
+                  currentUser.rol === "ADMIN_ROLE" ||
+                  currentUser.rol === "COORDINATOR_ROLE")
               }
             >
               <BasicLayout>

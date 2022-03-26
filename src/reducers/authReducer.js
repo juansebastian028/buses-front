@@ -1,15 +1,13 @@
 import { authTypes } from '../types/authTypes';
 
 const initialState = {
-  currentUser: JSON.parse(localStorage.getItem('currentUser')) || {},
-  token: localStorage.getItem('token'),
+  currentUser: {},
+  token: null,
   isLogged: false
 };
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case authTypes.LOGIN_SUCCESS:
-      localStorage.setItem('token', action.payload.token);
-      localStorage.setItem('currentUser', JSON.stringify(action.payload.user));
       return {
         ...state,
         currentUser: action.payload.user,
@@ -17,8 +15,6 @@ export const authReducer = (state = initialState, action) => {
         isLogged: true
       };
     case authTypes.LOGIN_GOOGLE_SUCCESS:
-      localStorage.setItem('token', action.payload.token);
-      localStorage.setItem('currentUser', JSON.stringify(action.payload.user));
       return {
         ...state,
         currentUser: action.payload.user,

@@ -29,58 +29,29 @@
 }
 
 .google-btn {
-  background-color: #4285f4;
-  border-radius: 2px;
-  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  height: 42px;
-  margin: 1rem 0;
   width: 100%;
-
-  transition: box-shadow 0.3s ease;
-}
-
-.google-icon-wrapper {
-  background-color: #fff;
-  border-radius: 2px;
-  height: 40px;
-  margin-left: 1px;
-  margin-top: 1px;
-  position: absolute;
-  width: 40px;
 }
 
 .google-icon {
   height: 18px;
-  margin-left: 11px;
-  margin-top: 11px;
   position: absolute;
   width: 18px;
 }
 
 .btn-text {
-  color: #fff;
-  float: right;
-  font-size: 14px;
+  color: #000;
   letter-spacing: 0.2px;
-  margin: 11px 40px 0 0;
-}
-
-.google-icon-wrapper:hover {
-  box-shadow: 0 0 6px #4285f4;
-}
-
-.google-icon-wrapper:active {
-  background: #1669f2;
+  margin: 0 25px;
 }
 
 .mapboxgl-ctrl-bottom-right {
   display: none;
 }
+
 .map-container {
   height: 800px;
 }
-
 
 .marker {
   width: 50px;

@@ -99,9 +99,9 @@ export const Users = () => {
       showOnDesktop: true,
     },
     {
-      title: 'Phone',
-      dataIndex: 'phone',
-      key: 'phone',
+      title: 'Rol',
+      dataIndex: 'rol',
+      key: 'rol',
       showOnResponse: true,
       showOnDesktop: true,
     },
@@ -218,13 +218,13 @@ export const Users = () => {
       </Modal>
       <Table 
         antTableProps={{
-          rowKey: "id",
+          rowKey: "_id",
           showHeader: true,
           columns,
           dataSource: users,
           pagination: true
         }}
-        mobileBreakPoint={768} rowKey="id" />
+        mobileBreakPoint={768} rowKey="_id" />
     </>
   );
 };
