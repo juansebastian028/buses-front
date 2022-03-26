@@ -14,7 +14,6 @@ function* getCoords({ payload }) {
     const response = yield call(Axios.get, URL);
     const data = response.data.routes[0];
     const route = data.geometry.coordinates;
-    console.log(route)
     yield put({
       type: mapTypes.GET_COORDS_SUCCESS,
       payload: route,

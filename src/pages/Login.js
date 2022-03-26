@@ -1,22 +1,17 @@
-import React from 'react';
-import { Form, Input, Button, Avatar } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
-import {
-  login,
-  googleLogin
-} from '../actions/auth';
+import React from "react";
+import { Form, Input, Button, Avatar } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "react-google-login";
+import { login, googleLogin } from "../actions/auth";
 
 export const Login = () => {
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onFinish = (values) => {
-    dispatch( login(values) );   
-  };
-
-  const handleGoogleLogin = () => {
-    console.log('Google');
+    dispatch(login(values, navigate));
   };
 
   return (
@@ -38,7 +33,7 @@ export const Login = () => {
             rules={[
               {
                 required: true,
-                message: 'Please input your Email!',
+                message: "Please input your Email!",
               },
             ]}
           >
@@ -53,7 +48,7 @@ export const Login = () => {
             rules={[
               {
                 required: true,
-                message: 'Please input your Password!',
+                message: "Please input your Password!",
               },
             ]}
           >
@@ -64,7 +59,7 @@ export const Login = () => {
               placeholder="Password"
             />
           </Form.Item>
-          <div className="google-btn" onClick={handleGoogleLogin}>
+          {/* <div className="google-btn" onClick={handleGoogleLogin}>
             <div className="google-icon-wrapper">
               <img
                 className="google-icon"
@@ -76,7 +71,7 @@ export const Login = () => {
             <p className="btn-text">
               <b>Continuar con Google</b>
             </p>
-          </div>
+          </div> */}
           <Form.Item>
             <Button
               size="large"
