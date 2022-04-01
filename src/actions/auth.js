@@ -17,4 +17,7 @@ export const logout = (navigate) => ({
   navigate
 })
 
+export const getRoles = () => ({
+  type: authTypes.GET_LIST_ROLES_REQUEST,
+})
 

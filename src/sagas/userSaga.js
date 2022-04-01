@@ -1,5 +1,6 @@
-import { call, put, all, takeLatest } from 'redux-saga/effects';
 import Axios from 'axios';
+import { call, put, all, takeLatest } from 'redux-saga/effects';
+import { message } from "antd";
 import { userTypes } from '../types/userTypes';
 
 function* listUsers() {
@@ -28,8 +29,18 @@ function* removeUser({ payload }) {
 function* addUser({ payload }) {
   try {
     const URL = `${process.env.REACT_APP_API_URL}/users`;
-    yield call(Axios.post, URL);
-    yield put({ type: userTypes.ADD_USER_SUCCESS, payload });
+    const res = yield Axios({
+      method: "POST",
+      url: URL,
+      type: userTypes.ADD_USER_SUCCESS,
+      data: payload,
+    });
+    const { data } = res;
+    if (data.msg) {
+      message("error", data.msg);
+    } else {
+      yield put({ type: userTypes.ADD_USER_SUCCESS, payload: data });
+    }
   } catch (error) {
     console.log(error);
   }
