@@ -19,14 +19,16 @@ export const userReducer = (state = initialState, action) => {
         users: [...state.users, action.payload],
       };
     case userTypes.UPDATE_USER_SUCCESS:
+      console.log(state.users);
+      console.log( action.payload);
       return {
         ...state,
-        users: state.users.map((user) => (user.id === action.payload.id ? action.payload : user)),
+        users: state.users.map((user) => (user.uid === action.payload.uid ? action.payload : user)),
       };
     case userTypes.DELETE_USER_SUCCESS:
       return {
         ...state,
-        users: state.users.filter((user) => user.id !== action.payload),
+        users: state.users.filter((user) => user.uid !== action.payload.uid),
       };
     case userTypes.SET_ACTIVE_USER:
       return {

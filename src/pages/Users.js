@@ -20,6 +20,7 @@ const initFormValues = {
   name: '',
   email: '',
   phone: '',
+  rol: ''
 };
 
 export const Users = () => {
@@ -27,7 +28,6 @@ export const Users = () => {
   const { users, activeUser, isLoading } = useSelector((state) => state.user);
   const { roles } = useSelector((state) => state.auth);
   const { isModalOpen } = useSelector((state) => state.ui);
-  console.log(roles)
 
   const [userForm] = Form.useForm();
 
@@ -42,6 +42,7 @@ export const Users = () => {
         name: activeUser.name,
         email: activeUser.email,
         phone: activeUser.phone,
+        rol: activeUser.rol,
       });
     } else {
       userForm.setFieldsValue(initFormValues);
@@ -70,7 +71,7 @@ export const Users = () => {
 
   const onFinishAddUser = (user) => {
     if (activeUser) {
-      dispatch(userUpdated({ id: activeUser.id, ...user }));
+      dispatch(userUpdated({ id: activeUser.uid, ...user }));
     } else {
       dispatch(userAdded(user));
     }
@@ -89,7 +90,7 @@ export const Users = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: 'Nombre',
       dataIndex: 'name',
       key: 'name',
       showOnResponse: true,
@@ -110,8 +111,8 @@ export const Users = () => {
       showOnDesktop: true,
     },
     {
-      title: 'Actions',
-      dataIndex: 'id',
+      title: 'Acciones',
+      dataIndex: 'uid',
       key: 'id',
       showOnResponse: true,
       showOnDesktop: true,
@@ -123,16 +124,16 @@ export const Users = () => {
               onEditUser(user);
             }}
           >
-            Edit
+            Editar
           </Button>
           <Popconfirm
-            title="Are you sure to delete this user?"
+            title="Está seguro de eliminar este usuario?"
             onConfirm={() => handleDelete(id)}
             okText="Si"
             cancelText="No"
           >
             <Button type="primary" danger>
-              Delete
+              Eliminar
             </Button>
           </Popconfirm>
         </>
@@ -145,12 +146,12 @@ export const Users = () => {
       <Row justify="start">
         <Col span={12}>
           <Button onClick={onAddUser} type="primary" style={{ margin: 10 }}>
-            Add
+            Agregar
           </Button>
         </Col>
       </Row>
       <Modal
-        title={activeUser ? 'Edit User' : 'Add User'}
+        title={activeUser ? 'Editar Usuario' : 'Agregar Usuario'}
         visible={isModalOpen}
         onCancel={handleCancelModal}
         okButtonProps={{ style: { display: 'none' } }}
@@ -174,11 +175,11 @@ export const Users = () => {
             rules={[
               {
                 required: true,
-                message: 'Name is required',
+                message: 'El nombre es obligatorio',
               },
             ]}
           >
-            <Input placeholder="Enter your name" />
+            <Input placeholder="Ingrese el nombre" />
           </Form.Item>
           <Form.Item
             label="Email"
@@ -186,15 +187,15 @@ export const Users = () => {
             rules={[
               {
                 required: true,
-                message: 'Email is required',
+                message: 'El email es obligatorio',
               },
               {
                 type: 'email',
-                message: 'Invalid email',
+                message: 'Email invalido',
               },
             ]}
           >
-            <Input placeholder="Enter your email" />
+            <Input placeholder="Ingrese el email" />
           </Form.Item>
           <Form.Item
             label="Contraseña"
@@ -206,7 +207,7 @@ export const Users = () => {
               },
             ]}
           >
-            <Input type="password" placeholder="Enter your contraseña" />
+            <Input type="password" placeholder="Ingrese la contraseña" />
           </Form.Item>
           <Form.Item
             label="Rol"
@@ -229,7 +230,7 @@ export const Users = () => {
             }}
           >
             <Button type="primary" htmlType="submit">
-              Send
+              Guardar
             </Button>
           </Form.Item>
         </Form>
