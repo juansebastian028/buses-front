@@ -15,6 +15,7 @@ export const googleLogin = (user, navigate) => ({
 export const logout = (navigate) => ({
   type: authTypes.LOGOUT_REQUEST,
   navigate
-})
+});
+
 
 

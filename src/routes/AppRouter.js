@@ -11,6 +11,7 @@ import { MyFavoriteRoutes } from "../pages/MyFavoriteRoutes";
 import { useSelector } from "react-redux";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { PublicRoute } from "./PublicRoute";
+
 export const AppRouter = () => {
   const { currentUser, isLogged } = useSelector((state) => state.auth);
   return (
@@ -19,9 +20,9 @@ export const AppRouter = () => {
         <Route
           path="/"
           element={
-              <BasicLayout>
-                <Home />
-              </BasicLayout>
+            <BasicLayout>
+              <Home />
+            </BasicLayout>
           }
         />
         <Route
@@ -55,9 +56,9 @@ export const AppRouter = () => {
         <Route
           path="/bus-route/:id"
           element={
-              <BasicLayout>
-                <BusRoute />
-              </BasicLayout>
+            <BasicLayout>
+              <BusRoute />
+            </BasicLayout>
           }
         />
         <Route

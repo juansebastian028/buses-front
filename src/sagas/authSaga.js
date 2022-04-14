@@ -44,7 +44,6 @@ function* loginWithGoogleSignIn({ payload, navigate }) {
 }
 
 function* logout({ navigate }) {
-  localStorage.clear();
   yield put({ type: authTypes.LOGOUT_SUCCESS });
   navigate("/login");
 }

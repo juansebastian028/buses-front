@@ -24,6 +24,7 @@ export const HeaderPage = ({ collapsed, toggle }) => {
   };
 
   const handleGoogleLogin = (res) => {
+    console.log(res.tokenId);
     dispatch(googleLogin({ tokenId: res.tokenId }, navigate));
   };
 
