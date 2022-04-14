@@ -5,7 +5,6 @@ import { mapTypes } from "../types/mapTypes";
 function* getCoords({ payload }) {
   try {
     const { coords, mapboxgl } = payload;
-    console.log(coords, mapboxgl);
     const URL = [
       `https://api.mapbox.com/directions/v5/mapbox/driving/`,
       `${coords[0][0]},${coords[0][1]};${coords[1][0]},${coords[1][1]}`,
