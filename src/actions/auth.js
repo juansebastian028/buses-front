@@ -18,4 +18,7 @@ export const logout = (navigate) => ({
 });
 
 
+export const getRoles = () => ({
+  type: authTypes.GET_LIST_ROLES_REQUEST,
+})
 

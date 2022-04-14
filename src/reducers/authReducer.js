@@ -3,7 +3,8 @@ import { authTypes } from '../types/authTypes';
 const initialState = {
   currentUser: {},
   token: null,
-  isLogged: false
+  isLogged: false,
+  roles: []
 };
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -28,6 +29,11 @@ export const authReducer = (state = initialState, action) => {
         token: null,
         isLogged: false
       };
+      case authTypes.GET_LIST_ROLES_SUCCESS:
+        return {
+          ...state,
+          roles: action.payload
+        };
     default:
       return state;
   }

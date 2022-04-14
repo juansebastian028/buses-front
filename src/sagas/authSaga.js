@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { put, all, takeLatest } from "redux-saga/effects";
+import { call, put, all, takeLatest } from "redux-saga/effects";
 import { message } from "antd";
 import { authTypes } from "../types/authTypes";
 
@@ -48,10 +48,24 @@ function* logout({ navigate }) {
   navigate("/login");
 }
 
+function* listRoles() {
+  try {
+    const URL = `${process.env.REACT_APP_API_URL}/roles`;
+    const response = yield call(Axios.get, URL);
+    yield put({
+      type: authTypes.GET_LIST_ROLES_SUCCESS,
+      payload: response.data.roles,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default function* authSaga() {
   yield all([
     yield takeLatest(authTypes.LOGIN_REQUEST, login),
     yield takeLatest(authTypes.LOGIN_GOOGLE_REQUEST, loginWithGoogleSignIn),
     yield takeLatest(authTypes.LOGOUT_REQUEST, logout),
+    yield takeLatest(authTypes.GET_LIST_ROLES_REQUEST, listRoles),
   ]);
 }

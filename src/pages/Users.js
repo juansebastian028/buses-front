@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Button, Popconfirm, Row, Col, Modal, Form, Input,
+  Button, Popconfirm, Row, Col, Modal, Form, Input, Select
 } from 'antd';
 import  Table  from 'ant-responsive-table';
 import {
@@ -14,6 +14,7 @@ import {
 } from '../actions/user';
 import { Spinner } from '../components/Spinner';
 import { uiOpenModal, uiCloseModal } from '../actions/ui';
+import { getRoles } from '../actions/auth';
 
 const initFormValues = {
   name: '',
@@ -24,12 +25,15 @@ const initFormValues = {
 export const Users = () => {
   const dispatch = useDispatch();
   const { users, activeUser, isLoading } = useSelector((state) => state.user);
+  const { roles } = useSelector((state) => state.auth);
   const { isModalOpen } = useSelector((state) => state.ui);
+  console.log(roles)
 
   const [userForm] = Form.useForm();
 
   useEffect(() => {
     dispatch(getListUsers());
+    dispatch(getRoles());
   }, [dispatch]);
 
   useEffect(() => {
@@ -193,16 +197,30 @@ export const Users = () => {
             <Input placeholder="Enter your email" />
           </Form.Item>
           <Form.Item
-            label="phone"
-            name="phone"
+            label="Contraseña"
+            name="password"
             rules={[
               {
                 required: true,
-                message: 'Phone is required',
+                message: 'La contraseña es obligatoria',
               },
             ]}
           >
-            <Input placeholder="Enter your phone" />
+            <Input type="password" placeholder="Enter your contraseña" />
+          </Form.Item>
+          <Form.Item
+            label="Rol"
+            name="rol"
+            rules={[
+              {
+                required: true,
+                message: 'El rol es obligatorio',
+              },
+            ]}
+          >
+          <Select>
+            { roles.map( (role) => <Select.Option key={role._id} value={role.rol}> {role.rol} </Select.Option> ) }
+          </Select>
           </Form.Item>
           <Form.Item
             wrapperCol={{
