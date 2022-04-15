@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Button, Popconfirm, Row, Col, Modal, Form, Input, Select
+  Button, Popconfirm, Row, Col, Modal, Form, Input, Select, Space
 } from 'antd';
 import  Table  from 'ant-responsive-table';
 import {
@@ -14,6 +14,8 @@ import {
 } from '../actions/user';
 import { Spinner } from '../components/Spinner';
 import { uiOpenModal, uiCloseModal } from '../actions/ui';
+import Highlighter from 'react-highlight-words';
+import { SearchOutlined } from '@ant-design/icons';
 import { getRoles } from '../actions/auth';
 
 const initFormValues = {
@@ -28,6 +30,11 @@ export const Users = () => {
   const { users, activeUser, isLoading } = useSelector((state) => state.user);
   const { roles } = useSelector((state) => state.auth);
   const { isModalOpen } = useSelector((state) => state.ui);
+
+  const [search, setSearch] = useState({
+    searchText: '',
+    searchedColumn: '',
+  });
 
   const [userForm] = Form.useForm();
 
@@ -88,13 +95,81 @@ export const Users = () => {
     openModal();
   };
 
+  const getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            //this.searchInput = node;
+          }}
+          placeholder={`Buscar ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Buscar
+          </Button>
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+            Borrar
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        : '',
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        //setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    render: text =>
+      search.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[search.searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        <div style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>
+          {text}
+        </div>
+      ),
+  });
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearch({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+  
+  const handleReset = clearFilters => {
+    clearFilters();
+    setSearch({ searchText: '' });
+  };
+
   const columns = [
     {
       title: 'Nombre',
       dataIndex: 'name',
       key: 'name',
       showOnResponse: true,
-      showOnDesktop: true
+      showOnDesktop: true,
+      ...getColumnSearchProps('name')
     },
     {
       title: 'Email',
@@ -102,6 +177,7 @@ export const Users = () => {
       key: 'email',
       showOnResponse: true,
       showOnDesktop: true,
+      ...getColumnSearchProps('email')
     },
     {
       title: 'Rol',
@@ -109,6 +185,7 @@ export const Users = () => {
       key: 'rol',
       showOnResponse: true,
       showOnDesktop: true,
+      ...getColumnSearchProps('rol')
     },
     {
       title: 'Acciones',
