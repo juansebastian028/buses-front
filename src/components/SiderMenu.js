@@ -22,7 +22,9 @@ export const SiderMenu = ({ collapsed }) => {
         breakpoint="sm"
         collapsedWidth="0"
       >
-        <div className="logo" />
+        <div className="logo">
+          Bus Soft
+        </div>
         <Menu theme="dark" mode="inline">
           <Menu.Item key="1" icon={<HomeOutlined />}>
             <Link to="/">Home</Link>

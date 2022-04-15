@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import { HeaderPage } from '../components/HeaderPage';
 import { SiderMenu } from '../components/SiderMenu';
 
-const { Content } = Layout;
+const { Content, Footer } = Layout;
 
 export const BasicLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -24,6 +24,7 @@ export const BasicLayout = ({ children }) => {
         >
           {children}
         </Content>
+        <Footer style={{ textAlign: 'center' }}>©2022 Bus Soft | All Rights Reserved</Footer>
       </Layout>
     </Layout>
   );

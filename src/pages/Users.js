@@ -156,6 +156,7 @@ export const Users = () => {
         onCancel={handleCancelModal}
         okButtonProps={{ style: { display: 'none' } }}
         getContainer={false}
+        width="600px"
       >
         <Form
           form={userForm}

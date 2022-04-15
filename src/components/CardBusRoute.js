@@ -13,7 +13,7 @@ export const CardBusRoute = ({ busRoute }) => {
       <Link to={`/bus-route/${busRoute._id}`}>
         <Meta
           avatar={
-            <Avatar src="https://cdn-icons-png.flaticon.com/512/64/64283.png" />
+            <Avatar src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Bus-logo.svg/768px-Bus-logo.svg.png" />
           }
           title={busRoute.title}
           description={busRoute.description}
