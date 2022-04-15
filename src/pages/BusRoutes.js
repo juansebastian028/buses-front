@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  Button, Popconfirm, Row, Col, Modal, Form, Input,
-} from 'antd';
-import  Table  from 'ant-responsive-table';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Popconfirm, Row, Col, Modal, Form, Input, Tabs } from "antd";
+import Table from "ant-responsive-table";
 import {
   clearActiveBusRoute,
   getListBuses,
@@ -11,9 +9,10 @@ import {
   busRouteAdded,
   busRouteDeleted,
   busRouteUpdated,
-} from '../actions/busRoutes';
-import { Spinner } from '../components/Spinner';
-import { uiOpenModal, uiCloseModal } from '../actions/ui';
+} from "../actions/busRoutes";
+import { Spinner } from "../components/Spinner";
+import { uiOpenModal, uiCloseModal } from "../actions/ui";
+import { MapRegister } from "../components/MapRegister";
 
 const initFormValues = {
   busRouteNumber: null,
@@ -21,7 +20,9 @@ const initFormValues = {
 
 export const BusRoutes = () => {
   const dispatch = useDispatch();
-  const { busRoutes, activeBusRoute, isLoading } = useSelector((state) => state.busRoute);
+  const { busRoutes, activeBusRoute, isLoading } = useSelector(
+    (state) => state.busRoute
+  );
   const { isModalOpen } = useSelector((state) => state.ui);
 
   const [busRoutesForm] = Form.useForm();
@@ -81,30 +82,30 @@ export const BusRoutes = () => {
 
   const columns = [
     {
-      title: '# Ruta',
-      dataIndex: 'busRouteNumber',
-      key: 'busRouteNumber',
-      showOnResponse: true,
-      showOnDesktop: true
-    },
-    {
-      title: 'Salida',
-      dataIndex: 'busDeparture',
-      key: 'busDeparture',
+      title: "# Ruta",
+      dataIndex: "busRouteNumber",
+      key: "busRouteNumber",
       showOnResponse: true,
       showOnDesktop: true,
     },
     {
-      title: 'Llegada',
-      dataIndex: 'busArrival',
-      key: 'busArrival',
+      title: "Salida",
+      dataIndex: "busDeparture",
+      key: "busDeparture",
       showOnResponse: true,
       showOnDesktop: true,
     },
     {
-      title: 'Actions',
-      dataIndex: 'id',
-      key: 'id',
+      title: "Llegada",
+      dataIndex: "busArrival",
+      key: "busArrival",
+      showOnResponse: true,
+      showOnDesktop: true,
+    },
+    {
+      title: "Actions",
+      dataIndex: "id",
+      key: "id",
       showOnResponse: true,
       showOnDesktop: true,
       render: (id, busRoute) => (
@@ -142,11 +143,12 @@ export const BusRoutes = () => {
         </Col>
       </Row>
       <Modal
-        title={activeBusRoute ? 'Edit Bus Route' : 'Add Bus Route'}
+        title={activeBusRoute ? "Edit Bus Route" : "Add Bus Route"}
         visible={isModalOpen}
         onCancel={handleCancelModal}
-        okButtonProps={{ style: { display: 'none' } }}
+        okButtonProps={{ style: { display: "none" } }}
         getContainer={false}
+        width="800px"
       >
         <Form
           form={busRoutesForm}
@@ -166,13 +168,20 @@ export const BusRoutes = () => {
             rules={[
               {
                 required: true,
-                message: '# Ruta es obligatorio',
+                message: "# Ruta es obligatorio",
               },
             ]}
           >
             <Input placeholder="Ingrese el número de la ruta" />
           </Form.Item>
-
+          <Tabs defaultActiveKey="1">
+            <Tabs.TabPane tab="Ida" key="1">
+              <MapRegister />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Vuelta" key="2">
+              <MapRegister />
+            </Tabs.TabPane>
+          </Tabs>
           <Form.Item
             wrapperCol={{
               offset: 12,
@@ -185,15 +194,17 @@ export const BusRoutes = () => {
           </Form.Item>
         </Form>
       </Modal>
-      <Table 
+      <Table
         antTableProps={{
           rowKey: "id",
           showHeader: true,
           columns,
           dataSource: busRoutes,
-          pagination: true
+          pagination: true,
         }}
-        mobileBreakPoint={768} rowKey="id" />
+        mobileBreakPoint={768}
+        rowKey="id"
+      />
     </>
   );
 };
