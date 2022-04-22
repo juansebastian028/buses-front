@@ -7,7 +7,7 @@ import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 mapboxgl.accessToken =
   "pk.eyJ1IjoianVhbnNlYmFzdGlhbjI4IiwiYSI6ImNraDllZ3NpMDBpb2wyc3FpazE4dTl2bzAifQ.Hl0cvQVf_0jP-LEOFcGUWQ";
 
-export const MapRegister = () => {
+export const MapRegister = ({ handleCoords }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(-75.6946);
@@ -31,7 +31,7 @@ export const MapRegister = () => {
   }, [markersRefs]);
 
   useEffect(() => {
-    console.log(coords);
+    handleCoords(coords);
   }, [coords]);
 
   const buildMap = () => {

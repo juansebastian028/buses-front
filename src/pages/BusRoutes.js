@@ -13,9 +13,10 @@ import {
 import { Spinner } from "../components/Spinner";
 import { uiOpenModal, uiCloseModal } from "../actions/ui";
 import { MapRegister } from "../components/MapRegister";
+import { EditableTagGroup } from "../components/EditableTagGroup";
 
 const initFormValues = {
-  busRouteNumber: null,
+  number: null,
 };
 
 export const BusRoutes = () => {
@@ -34,7 +35,11 @@ export const BusRoutes = () => {
   useEffect(() => {
     if (activeBusRoute) {
       busRoutesForm.setFieldsValue({
-        busRouteNumber: activeBusRoute.busRouteNumber,
+        number: activeBusRoute.busRouteNumber,
+        journeys: {
+          outward: activeBusRoute?.journeys?.outward,
+          return: activeBusRoute?.journeys?.return,
+        },
       });
     } else {
       busRoutesForm.setFieldsValue(initFormValues);
@@ -63,7 +68,8 @@ export const BusRoutes = () => {
 
   const onFinishAddBusRoute = (busRoute) => {
     if (activeBusRoute) {
-      dispatch(busRouteUpdated({ id: activeBusRoute.id, ...busRoute }));
+      console.log(busRoute);
+      // dispatch(busRouteUpdated({ id: activeBusRoute.id, ...busRoute }));
     } else {
       dispatch(busRouteAdded(busRoute));
     }
@@ -80,35 +86,53 @@ export const BusRoutes = () => {
     openModal();
   };
 
+  const handleTags = (name, tags) => {
+    busRoutesForm.setFieldsValue({
+      ...activeBusRoute,
+      journeys: {
+        [name]: tags,
+      },
+    });
+  };
+
+  const handleCoords = (name, coords) => {
+    busRoutesForm.setFieldsValue({
+      ...activeBusRoute,
+      coords: {
+        [name]: coords,
+      },
+    });
+  };
+
   const columns = [
     {
       title: "# Ruta",
-      dataIndex: "busRouteNumber",
-      key: "busRouteNumber",
+      dataIndex: "number",
+      key: "number",
       showOnResponse: true,
       showOnDesktop: true,
     },
-    {
-      title: "Salida",
-      dataIndex: "busDeparture",
-      key: "busDeparture",
-      showOnResponse: true,
-      showOnDesktop: true,
-    },
-    {
-      title: "Llegada",
-      dataIndex: "busArrival",
-      key: "busArrival",
-      showOnResponse: true,
-      showOnDesktop: true,
-    },
+    // {
+    //   title: "Salida",
+    //   dataIndex: "busDeparture",
+    //   key: "busDeparture",
+    //   showOnResponse: true,
+    //   showOnDesktop: true,
+    // },
+    // {
+    //   title: "Llegada",
+    //   dataIndex: "busArrival",
+    //   key: "busArrival",
+    //   showOnResponse: true,
+    //   showOnDesktop: true,
+    // },
     {
       title: "Actions",
       dataIndex: "id",
       key: "id",
       showOnResponse: true,
       showOnDesktop: true,
-      render: (id, busRoute) => (
+      render: (_, busRoute) => (
         <>
           <Button
             type="primary"
@@ -120,7 +144,7 @@ export const BusRoutes = () => {
           </Button>
           <Popconfirm
             title="Are you sure to delete this bus route?"
-            onConfirm={() => handleDelete(id)}
+            onConfirm={() => handleDelete(busRoute.uid)}
             okText="Si"
             cancelText="No"
           >
@@ -164,7 +188,7 @@ export const BusRoutes = () => {
         >
           <Form.Item
             label="# Ruta"
-            name="busRoteNumber"
+            name="number"
             rules={[
               {
                 required: true,
@@ -176,10 +200,38 @@ export const BusRoutes = () => {
           </Form.Item>
           <Tabs defaultActiveKey="1">
             <Tabs.TabPane tab="Ida" key="1">
-              <MapRegister />
+              <Form.Item name={["journeys", "outward"]}>
+                <EditableTagGroup
+                  handleTags={(tags) => handleTags("outward", tags)}
+                  tags={
+                    activeBusRoute?.journeys?.outward
+                      ? activeBusRoute.journeys.outward
+                      : []
+                  }
+                />
+              </Form.Item>
+              <Form.Item name={["coords", "outward"]}>
+                <MapRegister
+                  handleCoords={(coords) => handleCoords("outward", coords)}
+                />
+              </Form.Item>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Vuelta" key="2">
-              <MapRegister />
+              <Form.Item name={["journeys", "return"]}>
+                <EditableTagGroup
+                  handleTags={(tags) => handleTags("return", tags)}
+                  tags={
+                    activeBusRoute?.journeys?.return
+                      ? activeBusRoute.journeys.return
+                      : []
+                  }
+                />
+              </Form.Item>
+              <Form.Item name={["coords", "return"]}>
+                <MapRegister
+                  handleCoords={(coords) => handleCoords("return", coords)}
+                />
+              </Form.Item>
             </Tabs.TabPane>
           </Tabs>
           <Form.Item
@@ -189,7 +241,7 @@ export const BusRoutes = () => {
             }}
           >
             <Button type="primary" htmlType="submit">
-              Send
+              Guardar
             </Button>
           </Form.Item>
         </Form>
