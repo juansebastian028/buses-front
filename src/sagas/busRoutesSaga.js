@@ -32,7 +32,8 @@ function* removeBusRoute({ payload }) {
     if (data.msg) {
       message("error", data.msg);
     } else {
-      yield put({ type:  busRoutesTypes.DELETE_BUS_ROUTE_SUCCESS, payload: data });
+      console.log(data);
+      yield put({ type:  busRoutesTypes.DELETE_BUS_ROUTE_SUCCESS, payload: data.uid });
     }
   } catch (error) {
     console.log(error);
@@ -57,7 +58,6 @@ function* addBusRoute({ payload }) {
     console.log(error);
   }
 }
-
 
 function* updateBusRoute({ payload }) {
   try {

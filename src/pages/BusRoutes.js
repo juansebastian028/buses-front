@@ -140,7 +140,7 @@ export const BusRoutes = () => {
               onEditBusRoute(busRoute);
             }}
           >
-            Edit
+            Editar
           </Button>
           <Popconfirm
             title="Are you sure to delete this bus route?"
@@ -149,7 +149,7 @@ export const BusRoutes = () => {
             cancelText="No"
           >
             <Button type="primary" danger>
-              Delete
+              Eliminar
             </Button>
           </Popconfirm>
         </>
