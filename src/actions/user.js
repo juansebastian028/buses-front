@@ -27,3 +27,14 @@ export const setActiveUser = (user) => ({
   type: userTypes.SET_ACTIVE_USER,
   payload: user
 })
+
+export const addBusRouteToFavourites = (userId, busRouteId) => ({
+  type: userTypes.ADD_BUS_ROUTE_TO_FAVOURITES,
+  userId,
+  busRouteId
+})
+
+export const removeBusRouteFromFavourites = (busRouteId) => ({
+  type: userTypes.REMOVE_BUS_ROUTE_FROM_FAVOURITES,
+  payload: busRouteId
+})
