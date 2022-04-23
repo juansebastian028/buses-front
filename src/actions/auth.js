@@ -17,8 +17,11 @@ export const logout = (navigate) => ({
   navigate
 });
 
-
 export const getRoles = () => ({
   type: authTypes.GET_LIST_ROLES_REQUEST,
 })
 
+export const currentUserUpdated = (user) => ({
+  type: authTypes.UPDATE_CURRENT_USER,
+  payload: user
+})

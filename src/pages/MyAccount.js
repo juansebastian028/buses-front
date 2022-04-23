@@ -1,22 +1,27 @@
 import React, { useEffect } from "react";
 import { Form, Button, Input } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateCurrentUser,
+} from '../actions/user';
 
 const initFormValues = {
 	name: "",
 	email: "",
-	phone: "",
 };
 
 export const MyAccount = () => {
+	const dispatch = useDispatch();
+
 	const { currentUser } = useSelector((state) => state.auth);
 	const [userForm] = Form.useForm();
+
+	console.log(currentUser)
 
 	useEffect(() => {
 		userForm.setFieldsValue({
 			name: currentUser.name,
 			email: currentUser.email,
-			phone: "3115548520",
 		});
 
 		return () => {
@@ -24,8 +29,9 @@ export const MyAccount = () => {
 		};
 	}, [currentUser, userForm]);
 
-	const testOfFire = (values) => {
-		console.log(values)
+	const onFinishAddInfo = (values) => {
+		delete values.confirmPassword;
+		dispatch(updateCurrentUser({ id: currentUser.uid, rol: currentUser.rol, ...values }));
 	}
 
 	return (
@@ -39,20 +45,20 @@ export const MyAccount = () => {
 				wrapperCol={{
 					span: 18,
 				}}
-				onFinish={testOfFire}
+				onFinish={onFinishAddInfo}
 				initialValues={initFormValues}
 			>
 				<Form.Item
-					label="Name"
+					label="Nombre"
 					name="name"
 					rules={[
 						{
 							required: true,
-							message: "Name is required",
+							message: "El nombre es obligatorio",
 						},
 					]}
 				>
-					<Input placeholder="Enter your name" />
+					<Input placeholder="Ingrese el nombre" />
 				</Form.Item>
 				<Form.Item
 					label="Email"
@@ -60,35 +66,23 @@ export const MyAccount = () => {
 					rules={[
 						{
 							required: true,
-							message: "Email is required",
+							message: "El email es obligatorio",
 						},
 						{
 							type: "email",
-							message: "Invalid email",
+							message: "Email invalido",
 						},
 					]}
 				>
-					<Input placeholder="Enter your email" />
+					<Input placeholder="Ingrese el email" />
 				</Form.Item>
 				<Form.Item
-					label="phone"
-					name="phone"
-					rules={[
-						{
-							required: true,
-							message: "Phone is required",
-						},
-					]}
-				>
-					<Input placeholder="Enter your phone" />
-				</Form.Item>
-				<Form.Item
-					label="Password"
+					label="Contraseña"
 					name="password"
 					rules={[
 						{
 							required: true,
-							message: "Please input your password!",
+							message: "Ingrese la contraseña",
 						},
 					]}
 					hasFeedback
@@ -96,20 +90,20 @@ export const MyAccount = () => {
 					<Input.Password />
 				</Form.Item>
 				<Form.Item
-					label="Confirm Password"
+					label="Confirmar contraseña"
 					name="confirmPassword"
 					hasFeedback
 					rules={[
 						{
 							required: true,
-							message: "Please confirm your password!",
+							message: "Confirme la contraseña",
 						},
 						({ getFieldValue }) => ({
 							validator(_, value) {
 								if (!value || getFieldValue('password') === value) {
 									return Promise.resolve();
 								}
-								return Promise.reject(new Error('The two passwords that you entered do not match!'));
+								return Promise.reject(new Error('Las contraseñas no coinciden'));
 							},
 						}),
 					]}

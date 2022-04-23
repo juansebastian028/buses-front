@@ -27,3 +27,8 @@ export const setActiveUser = (user) => ({
   type: userTypes.SET_ACTIVE_USER,
   payload: user
 })
+
+export const updateCurrentUser = (user) => ({
+  type: userTypes.UPDATE_CURRENT_USER_REQUEST,
+  payload: user
+})

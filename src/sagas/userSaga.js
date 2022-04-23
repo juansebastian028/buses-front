@@ -3,6 +3,7 @@ import Axios from 'axios';
 import { call, put, all, takeLatest } from 'redux-saga/effects';
 import { message } from "antd";
 import { userTypes } from '../types/userTypes';
+import { authTypes } from '../types/authTypes';
 
 function* listUsers() {
   try {
@@ -67,7 +68,7 @@ function* updateUser({ payload }) {
     const res = yield Axios({
       method: "PUT",
       url: URL,
-      type: userTypes.ADD_USER_SUCCESS,
+      type: userTypes.UPDATE_USER_SUCCESS,
       data: payload,
     });
     const { data } = res;
@@ -81,11 +82,32 @@ function* updateUser({ payload }) {
   }
 }
 
+function* updateCurrentUser({ payload }) {
+  try {
+    const URL = `${process.env.REACT_APP_API_URL}/users/${payload.id}`;
+    const res = yield Axios({
+      method: "PUT",
+      url: URL,
+      type: userTypes.UPDATE_CURRENT_USER_SUCCESS,
+      data: payload,
+    });
+    const { data } = res;
+    if (data.msg) {
+      message("error", data.msg);
+    } else {
+      yield put({ type: authTypes.UPDATE_CURRENT_USER, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default function* userSaga() {
   yield all([
     yield takeLatest(userTypes.GET_LIST_USERS_REQUEST, listUsers),
     yield takeLatest(userTypes.DELETE_USER_REQUEST, removeUser),
     yield takeLatest(userTypes.ADD_USER_REQUEST, addUser),
     yield takeLatest(userTypes.UPDATE_USER_REQUEST, updateUser),
+    yield takeLatest(userTypes.UPDATE_CURRENT_USER_REQUEST, updateCurrentUser),
   ]);
 }

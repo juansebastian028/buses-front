@@ -34,6 +34,11 @@ export const authReducer = (state = initialState, action) => {
           ...state,
           roles: action.payload
         };
+    case authTypes.UPDATE_CURRENT_USER:
+        return {
+          ...state,
+          currentUser: action.payload,
+        };
     default:
       return state;
   }

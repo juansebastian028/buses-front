@@ -19,8 +19,6 @@ export const userReducer = (state = initialState, action) => {
         users: [...state.users, action.payload],
       };
     case userTypes.UPDATE_USER_SUCCESS:
-      console.log(state.users);
-      console.log( action.payload);
       return {
         ...state,
         users: state.users.map((user) => (user.uid === action.payload.uid ? action.payload : user)),
@@ -39,6 +37,13 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         activeUser: null,
+      };
+    case userTypes.UPDATE_CURRENT_USER_SUCCESS:
+      console.log(state.users);
+      console.log( action.payload);
+      return {
+        ...state,
+        users: state.users.map((user) => (user.uid === action.payload.uid ? action.payload : user)),
       };
     default:
       return state;
