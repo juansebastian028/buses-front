@@ -10,7 +10,7 @@ export const CardBusRoute = ({ busRoute }) => {
   return (
     <Card size="small" 
       extra={!isAddedToFavourites ? <StarOutlined onClick={() => setIsAddedToFavourites(true)} /> : <StarFilled onClick={() => setIsAddedToFavourites(false)} />} style={{ width: 300 }}>
-      <Link to={`/bus-route/${busRoute._id}`}>
+      <Link to={`/bus-route/${busRoute.uid}`}>
         <Meta
           avatar={
             <Avatar src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Bus-logo.svg/768px-Bus-logo.svg.png" />

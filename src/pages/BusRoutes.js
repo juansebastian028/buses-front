@@ -162,12 +162,12 @@ export const BusRoutes = () => {
       <Row justify="start">
         <Col span={12}>
           <Button onClick={onAddBusRoute} type="primary" style={{ margin: 10 }}>
-            Add
+            Agregar
           </Button>
         </Col>
       </Row>
       <Modal
-        title={activeBusRoute ? "Edit Bus Route" : "Add Bus Route"}
+        title={activeBusRoute ? "Editar Ruta" : "Agregar Ruta"}
         visible={isModalOpen}
         onCancel={handleCancelModal}
         okButtonProps={{ style: { display: "none" } }}
