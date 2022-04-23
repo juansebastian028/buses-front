@@ -48,7 +48,6 @@ function* addUser({ payload }) {
     const res = yield Axios({
       method: "POST",
       url: URL,
-      type: userTypes.ADD_USER_SUCCESS,
       data: payload,
     });
     const { data } = res;
@@ -102,6 +101,52 @@ function* updateCurrentUser({ payload }) {
   }
 }
 
+function* addToFavourites({ userId, busRouteId }) {
+  try {
+    const {token} = yield select((state) => state.auth);
+    const URL = `${process.env.REACT_APP_API_URL}/users/${userId}/busRoute`;
+    const res = yield Axios({
+      method: "POST",
+      url: URL,
+      data: { busRouteId },
+      headers: {
+        'x-token': token
+      }
+    });
+    const { data } = res;
+    if (data.msg) {
+      message("error", data.msg);
+    } else {
+      yield put({ type: userTypes.UPDATE_USER_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* removeFromFavourites({ payload }) {
+  try {
+    const {token} = yield select((state) => state.auth);
+    const URL = `${process.env.REACT_APP_API_URL}/users/${payload}`;
+    const res = yield Axios({
+      method: "DELETE",
+      url: URL,
+      data: payload,
+      headers: {
+        'x-token': token
+      }
+    });
+    const { data } = res;
+    if (data.msg) {
+      message("error", data.msg);
+    } else {
+      yield put({ type: userTypes.DELETE_USER_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default function* userSaga() {
   yield all([
     yield takeLatest(userTypes.GET_LIST_USERS_REQUEST, listUsers),
@@ -109,5 +154,7 @@ export default function* userSaga() {
     yield takeLatest(userTypes.ADD_USER_REQUEST, addUser),
     yield takeLatest(userTypes.UPDATE_USER_REQUEST, updateUser),
     yield takeLatest(userTypes.UPDATE_CURRENT_USER_REQUEST, updateCurrentUser),
+    yield takeLatest(userTypes.ADD_BUS_ROUTE_TO_FAVOURITES, addToFavourites),
+    yield takeLatest(userTypes.REMOVE_BUS_ROUTE_FROM_FAVOURITES, removeFromFavourites),
   ]);
 }
