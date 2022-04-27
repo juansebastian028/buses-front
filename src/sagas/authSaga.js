@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { call, put, all, takeLatest } from "redux-saga/effects";
+import { call, put, all, takeLatest, select } from "redux-saga/effects";
 import { message } from "antd";
 import { authTypes } from "../types/authTypes";
 
@@ -12,6 +12,7 @@ function* login({ payload, navigate }) {
       data: payload,
     });
     const { data } = res;
+    console.log(data);
     if (data.msg) {
       message("error", data.msg);
     } else {
@@ -61,11 +62,59 @@ function* listRoles() {
   }
 }
 
+function* addToFavourites({ userId, busRouteId }) {
+  try {
+    const {token} = yield select((state) => state.auth);
+    const URL = `${process.env.REACT_APP_API_URL}/users/${userId}/busRoute`;
+    const res = yield Axios({
+      method: "POST",
+      url: URL,
+      data: { busRouteId },
+      headers: {
+        'x-token': token
+      }
+    });
+    const { data } = res;
+    if (data.msg) {
+      message("error", data.msg);
+    } else {
+      yield put({ type: authTypes.ADD_BUS_ROUTE_TO_FAVOURITES_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* removeFromFavourites({ userId, busRouteId }) {
+  try {
+    const {token} = yield select((state) => state.auth);
+    const URL = `${process.env.REACT_APP_API_URL}/users/${userId}/busRoute`;
+    const res = yield Axios({
+      method: "PUT",
+      url: URL,
+      data: { busRouteId },
+      headers: {
+        'x-token': token
+      }
+    });
+    const { data } = res;
+    if (data.msg) {
+      message("error", data.msg);
+    } else {
+      yield put({ type: authTypes.REMOVE_BUS_ROUTE_FROM_FAVOURITES_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default function* authSaga() {
   yield all([
     yield takeLatest(authTypes.LOGIN_REQUEST, login),
     yield takeLatest(authTypes.LOGIN_GOOGLE_REQUEST, loginWithGoogleSignIn),
     yield takeLatest(authTypes.LOGOUT_REQUEST, logout),
     yield takeLatest(authTypes.GET_LIST_ROLES_REQUEST, listRoles),
+    yield takeLatest(authTypes.ADD_BUS_ROUTE_TO_FAVOURITES_REQUEST, addToFavourites),
+    yield takeLatest(authTypes.REMOVE_BUS_ROUTE_FROM_FAVOURITES_REQUEST, removeFromFavourites),
   ]);
 }

@@ -112,20 +112,18 @@ export const BusRoutes = () => {
       showOnResponse: true,
       showOnDesktop: true,
     },
-    // {
-    //   title: "Salida",
-    //   dataIndex: "busDeparture",
-    //   key: "busDeparture",
-    //   showOnResponse: true,
-    //   showOnDesktop: true,
-    // },
-    // {
-    //   title: "Llegada",
-    //   dataIndex: "busArrival",
-    //   key: "busArrival",
-    //   showOnResponse: true,
-    //   showOnDesktop: true,
-    // },
+    {
+      title: "Salida",
+      showOnResponse: true,
+      showOnDesktop: true,
+      render: (_, busRoute) => (busRoute?.journeys?.outward[0]),
+    },
+    {
+      title: "Llegada",
+      showOnResponse: true,
+      showOnDesktop: true,
+      render: (_, busRoute) => (busRoute?.journeys?.return[0]),
+    },
     {
       title: "Actions",
       dataIndex: "id",

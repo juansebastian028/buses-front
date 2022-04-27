@@ -22,3 +22,16 @@ export const getRoles = () => ({
   type: authTypes.GET_LIST_ROLES_REQUEST,
 })
 
+export const addBusRouteToFavourites = (userId, busRouteId) => ({
+  type: authTypes.ADD_BUS_ROUTE_TO_FAVOURITES_REQUEST,
+  userId,
+  busRouteId
+})
+
+export const removeBusRouteFromFavourites = (userId, busRouteId) => ({
+  type: authTypes.REMOVE_BUS_ROUTE_FROM_FAVOURITES_REQUEST,
+  userId,
+  busRouteId
+})
+
+
