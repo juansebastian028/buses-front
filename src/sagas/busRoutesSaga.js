@@ -61,9 +61,29 @@ function* addBusRoute({ payload }) {
 
 function* updateBusRoute({ payload }) {
   try {
-    const URL = `https://jsonplaceholder.typicode.com/users/${payload.id}`;
+    const URL = `https://jsonplaceholder.typicode.com/bus-routes/${payload.id}`;
     yield call(Axios.put, URL);
     yield put({ type: busRoutesTypes.UPDATE_BUS_ROUTE_SUCCESS, payload });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* addComment({ payload }) {
+  try {
+    const URL = `${process.env.REACT_APP_API_URL}/bus-routes/${payload.id}/comments`;
+    const res = yield Axios({
+      method: "PUT",
+      url: URL,
+      data: payload,
+    });
+    const { data } = res;
+    console.log(data)
+    if (data.msg) {
+      message("error", data.msg);
+    } else {
+      yield put({ type: busRoutesTypes.ADD_COMMENT_SUCCESS, payload: data });
+    }
   } catch (error) {
     console.log(error);
   }
@@ -75,5 +95,6 @@ export default function* busRoutesSaga() {
     yield takeLatest(busRoutesTypes.DELETE_BUS_ROUTE_REQUEST, removeBusRoute),
     yield takeLatest(busRoutesTypes.ADD_BUS_ROUTE_REQUEST, addBusRoute),
     yield takeLatest(busRoutesTypes.UPDATE_BUS_ROUTE_REQUEST, updateBusRoute),
+    yield takeLatest(busRoutesTypes.ADD_COMMENT_REQUEST, addComment),
   ]);
 }

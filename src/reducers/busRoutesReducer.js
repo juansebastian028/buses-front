@@ -38,6 +38,11 @@ export const busRoutesReducer = (state = initialState, action) => {
         ...state,
         activeBusRoute: null,
       };
+    case busRoutesTypes.ADD_COMMENT_SUCCESS:
+      return {
+        ...state,
+        busRoutes: state.busRoutes.map((busRoute) => (busRoute.uid === action.payload.uid ? action.payload : busRoute)),
+      };
     default:
       return state;
   }

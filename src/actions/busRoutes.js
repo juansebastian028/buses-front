@@ -27,3 +27,8 @@ export const setActiveBusRoute = (busRoute) => ({
   type: busRoutesTypes.SET_ACTIVE_BUS_ROUTE,
   payload: busRoute
 })
+
+export const addComment = (comment) => ({
+  type: busRoutesTypes.ADD_COMMENT_REQUEST,
+  payload: comment
+})
