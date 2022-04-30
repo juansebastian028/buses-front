@@ -213,6 +213,11 @@ export const BusRoutes = () => {
               <Form.Item name={["coords", "outward"]}>
                 <MapRegister
                   handleCoords={(coords) => handleCoords("outward", coords)}
+                  setOldCoords={
+                    activeBusRoute?.coords?.outward
+                      ? activeBusRoute.coords.outward
+                      : []
+                  }
                 />
               </Form.Item>
             </Tabs.TabPane>
