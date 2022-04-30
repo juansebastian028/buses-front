@@ -122,8 +122,8 @@ export const HeaderPage = ({ collapsed, toggle }) => {
                 }}
                 size="large"
                 gap={4}
-                src={currentUser.img ? currentUser.img : null }
-                icon={!currentUser.img ? <UserOutlined />: null}
+                src={currentUser.img ? currentUser.img : null}
+                icon={!currentUser.img ? <UserOutlined /> : null}
               />
             </div>
           </Dropdown>
