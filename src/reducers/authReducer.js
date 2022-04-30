@@ -34,6 +34,12 @@ export const authReducer = (state = initialState, action) => {
           ...state,
           roles: action.payload
         };
+      case authTypes.ADD_BUS_ROUTE_TO_FAVOURITES_SUCCESS:
+        return {
+          ...state,
+          currentUser: action.payload,
+        };
+      case authTypes.REMOVE_BUS_ROUTE_FROM_FAVOURITES_SUCCESS:
     case authTypes.UPDATE_CURRENT_USER:
         return {
           ...state,

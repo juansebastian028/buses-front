@@ -33,13 +33,3 @@ export const updateCurrentUser = (user) => ({
   payload: user
 })
 
-export const addBusRouteToFavourites = (userId, busRouteId) => ({
-  type: userTypes.ADD_BUS_ROUTE_TO_FAVOURITES,
-  userId,
-  busRouteId
-})
-
-export const removeBusRouteFromFavourites = (busRouteId) => ({
-  type: userTypes.REMOVE_BUS_ROUTE_FROM_FAVOURITES,
-  payload: busRouteId
-})
