@@ -27,12 +27,12 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
       newCoords.push([lngLat.lng, lngLat.lat]);
       element.on("dragend", onDragEnd);
     });
-    setCoords([...coords, ...newCoords]);
+    setCoords(newCoords);
   }, [markersRefs]);
 
   useEffect(() => {
     handleSetOldCoords(setOldCoords);
-  }, []);
+  }, [setOldCoords]);
 
   useEffect(() => {
     handleCoords(coords);
@@ -62,14 +62,15 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
       const lngLat = element.getLngLat();
       newCoords.push([lngLat.lng, lngLat.lat]);
     });
-    setCoords([...coords, ...newCoords]);
+    setCoords(newCoords);
   };
 
   const handleSetOldCoords = (oldCoords) => {
-    oldCoords.map((coord) => {
-      addMaker(coord[0], coord[1]);
+    const newMarkersRefs = [];
+    oldCoords.forEach((coord) => {
+      newMarkersRefs.push(addMaker(coord[0], coord[1]));
     });
-    setCoords(oldCoords);
+    setMarkersRefs([...markersRefs, ...newMarkersRefs]);
   }
 
   const addNewMaker = () => {
@@ -80,18 +81,18 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
     setMarkersRefs([...markersRefs, marker]);
   };
 
-  const addMaker = (lng, lat) => {
+  const addMaker = (lngd, latd) => {
     const marker = new mapboxgl.Marker({
       draggable: false,
     });
-    marker.setLngLat([lng, lat]).addTo(map.current);
-    setMarkersRefs([...markersRefs, marker]);
+    marker.setLngLat([lngd, latd]).addTo(map.current);
+    return marker;
   };
 
   const drawCoords = () => {
     if (map.current.getLayer('route')) map.current.removeLayer('route');
     if (map.current.getSource('route')) map.current.removeSource('route');
-    console.log(coords)
+
     if (coords.length) {
       map.current.once("data", () => {
         map.current.addSource("route", {
@@ -123,6 +124,13 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
   
         map.current.fitBounds([coords[0], coords[coords.length - 1]], {
           padding: 100,
+        });
+
+        map.current.on('click', 'route', (e) => {
+            // const features = map.current.queryRenderedFeatures(e.point, {
+            //   layers: ['counties']
+            // });
+            console.log(e)
         });
       });
     }
