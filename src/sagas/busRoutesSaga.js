@@ -48,9 +48,9 @@ function* removeBusRoute({ payload }) {
     });
     const { data } = res;
     if (data.msg) {
-      message("error", data.msg);
+      message.error(data.msg);
     } else {
-      console.log(data);
+      message.success('Ruta eliminada exitosamente.');
       yield put({ type:  busRoutesTypes.DELETE_BUS_ROUTE_SUCCESS, payload: data.uid });
     }
   } catch (error) {
@@ -68,8 +68,9 @@ function* addBusRoute({ payload }) {
     });
     const { data } = res;
     if (data.msg) {
-      message("error", data.msg);
+      message.error(data.msg);
     } else {
+      message.success('Ruta guardada exitosamente.');
       yield put({ type: busRoutesTypes.ADD_BUS_ROUTE_SUCCESS, payload: data });
     }
   } catch (error) {
@@ -79,9 +80,20 @@ function* addBusRoute({ payload }) {
 
 function* updateBusRoute({ payload }) {
   try {
-    const URL = `https://jsonplaceholder.typicode.com/bus-routes/${payload.id}`;
-    yield call(Axios.put, URL);
-    yield put({ type: busRoutesTypes.UPDATE_BUS_ROUTE_SUCCESS, payload });
+    const URL = `${process.env.REACT_APP_API_URL}/bus-routes/${payload.id}`;
+    const res = yield Axios({
+      method: "PUT",
+      url: URL,
+      type: busRoutesTypes.UPDATE_BUS_ROUTE_SUCCESS,
+      data: payload,
+    });
+    const { data } = res;
+    if (data.msg) {
+      message.error(data.msg);
+    } else {
+      message.success('Ruta actualizada exitosamente.');
+      yield put({ type: busRoutesTypes.UPDATE_BUS_ROUTE_SUCCESS, payload: data });
+    }
   } catch (error) {
     console.log(error);
   }
