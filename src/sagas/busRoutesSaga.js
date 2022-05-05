@@ -16,6 +16,24 @@ function* listBusRoutes() {
   }
 }
 
+function* getBusRoute({ payload }) {
+  try {
+    const URL = `${process.env.REACT_APP_API_URL}/bus-routes/${payload}`;
+    const res = yield Axios({
+      method: "GET",
+      url: URL,
+    });
+    const { data } = res;
+    if (!data.success) {
+      message("error", data.msg);
+    } else {
+      yield put({ type:  busRoutesTypes.GET_BUS_ROUTE_SUCCESS, payload: data.busRoute });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* removeBusRoute({ payload }) {
   try {
     const {token} = yield select((state) => state.auth);
@@ -78,7 +96,6 @@ function* addComment({ payload }) {
       data: payload,
     });
     const { data } = res;
-    console.log(data)
     if (data.msg) {
       message("error", data.msg);
     } else {
@@ -92,6 +109,7 @@ function* addComment({ payload }) {
 export default function* busRoutesSaga() {
   yield all([
     yield takeLatest(busRoutesTypes.GET_LIST_BUS_ROUTES_REQUEST, listBusRoutes),
+    yield takeLatest(busRoutesTypes.GET_BUS_ROUTE_REQUEST, getBusRoute),
     yield takeLatest(busRoutesTypes.DELETE_BUS_ROUTE_REQUEST, removeBusRoute),
     yield takeLatest(busRoutesTypes.ADD_BUS_ROUTE_REQUEST, addBusRoute),
     yield takeLatest(busRoutesTypes.UPDATE_BUS_ROUTE_REQUEST, updateBusRoute),

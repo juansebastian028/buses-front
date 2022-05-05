@@ -4,6 +4,11 @@ export const getListBuses = () => ({
   type: busRoutesTypes.GET_LIST_BUS_ROUTES_REQUEST,
 });
 
+export const getBusRouteById = (id) => ({
+  type: busRoutesTypes.GET_BUS_ROUTE_REQUEST,
+  payload: id
+});
+
 export const busRouteDeleted = (id) => ({
   type: busRoutesTypes.DELETE_BUS_ROUTE_REQUEST,
   payload: id
