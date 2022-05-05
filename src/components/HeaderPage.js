@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Layout, Avatar, Row, Col, Dropdown, Menu, Button } from "antd";
+import { Layout, Avatar, Row, Col, Dropdown, Menu } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -122,7 +122,8 @@ export const HeaderPage = ({ collapsed, toggle }) => {
                 }}
                 size="large"
                 gap={4}
-                icon={<UserOutlined />}
+                src={currentUser.img ? currentUser.img : null}
+                icon={!currentUser.img ? <UserOutlined /> : null}
               />
             </div>
           </Dropdown>

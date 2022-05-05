@@ -4,6 +4,7 @@ const initialState = {
   busRoutes: [],
   isLoading: true,
   activeBusRoute: null,
+  currentBusRoute: null
 };
 export const busRoutesReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -12,6 +13,11 @@ export const busRoutesReducer = (state = initialState, action) => {
         ...state,
         busRoutes: action.payload,
         isLoading: false,
+      };
+    case busRoutesTypes.GET_BUS_ROUTE_SUCCESS:
+      return {
+        ...state,
+        currentBusRoute: action.payload,
       };
     case busRoutesTypes.ADD_BUS_ROUTE_SUCCESS:
       return {
@@ -37,6 +43,12 @@ export const busRoutesReducer = (state = initialState, action) => {
       return {
         ...state,
         activeBusRoute: null,
+      };
+    case busRoutesTypes.ADD_COMMENT_SUCCESS:
+      return {
+        ...state,
+        busRoutes: state.busRoutes.map((busRoute) => (busRoute.uid === action.payload.uid ? action.payload : busRoute)),
+        currentBusRoute: action.payload
       };
     default:
       return state;
