@@ -86,8 +86,7 @@ export const BusRoutes = () => {
 
   const onFinishAddBusRoute = (busRoute) => {
     if (activeBusRoute) {
-      console.log(busRoute);
-      // dispatch(busRouteUpdated({ id: activeBusRoute.id, ...busRoute }));
+      dispatch(busRouteUpdated({ id: activeBusRoute.uid, ...busRoute }));
     } else {
       dispatch(busRouteAdded(busRoute));
     }
@@ -305,6 +304,11 @@ export const BusRoutes = () => {
               <Form.Item name={["coords", "outward"]}>
                 <MapRegister
                   handleCoords={(coords) => handleCoords("outward", coords)}
+                  setOldCoords={
+                    activeBusRoute?.coords?.outward
+                      ? activeBusRoute.coords.outward
+                      : []
+                  }
                 />
               </Form.Item>
             </Tabs.TabPane>
@@ -322,6 +326,11 @@ export const BusRoutes = () => {
               <Form.Item name={["coords", "return"]}>
                 <MapRegister
                   handleCoords={(coords) => handleCoords("return", coords)}
+                  setOldCoords={
+                    activeBusRoute?.coords?.return
+                      ? activeBusRoute.coords.return
+                      : []
+                  }
                 />
               </Form.Item>
             </Tabs.TabPane>
