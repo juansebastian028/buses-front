@@ -1,17 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import mapboxgl from "mapbox-gl";
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import io from "socket.io-client";
-import { getCoords } from "../actions/map";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoianVhbnNlYmFzdGlhbjI4IiwiYSI6ImNraDllZ3NpMDBpb2wyc3FpazE4dTl2bzAifQ.Hl0cvQVf_0jP-LEOFcGUWQ";
 
-export const Map = () => {
-  const dispatch = useDispatch();
-  const { coords } = useSelector((state) => state.map);
+export const Map = ({ coords }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(-75.6946);
@@ -19,10 +14,6 @@ export const Map = () => {
   const [zoom, setZoom] = useState(12);
   const markerDriver = useRef(null);
   const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    loadCoords();
-  }, []);
 
   useEffect(() => {
     const newSocket = io(`http://${window.location.hostname}:8080`);
@@ -39,7 +30,7 @@ export const Map = () => {
         addMarker(coords);
       });
     }
-  }, [coords]);
+  }, [coords, socket]);
 
   const buildMap = () => {
     if (map.current) return;
@@ -49,18 +40,6 @@ export const Map = () => {
       center: [lng, lat],
       zoom,
     });
-
-    const geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      mapboxgl: mapboxgl,
-    });
-    // geocoder.on("result", (event) => {
-    //   console.log(event);
-    //   const { result } = event;
-    //   geocoder.clear();
-    // });
-
-    map.current.addControl(geocoder);
   };
 
   const drawCoords = (coords) => {
@@ -98,14 +77,6 @@ export const Map = () => {
       socket.emit("find-driver", { points: coords });
       console.log(socket);
     });
-  };
-
-  const loadCoords = () => {
-    const coords = [
-      [-75.6946, 4.81321],
-      [-75.7149711, 4.8362411],
-    ];
-    dispatch(getCoords({ coords, mapboxgl }));
   };
 
   const addMarker = (coords) => {

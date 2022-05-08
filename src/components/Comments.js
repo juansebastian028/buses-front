@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Comment, Form, Button, List, Input, Rate } from "antd";
+import { Comment, Form, Button, List, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import moment from "moment";
