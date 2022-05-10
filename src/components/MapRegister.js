@@ -22,10 +22,36 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
 
   useEffect(() => {
     const newCoords = [];
-    markersRefs.forEach((element) => {
+    const newMarkersRefs = [];
+    markersRefs.forEach((element, index) => {
       const lngLat = element.getLngLat();
       newCoords.push([lngLat.lng, lngLat.lat]);
       element.on("dragend", onDragEnd);
+
+      if ( index == markersRefs.length - 1 ) {
+        const h2 = document.createElement('h2');
+
+        const btnBorrar = document.createElement('button');
+        btnBorrar.innerText = 'Borrar';
+    
+        const div = document.createElement('div');
+        div.append(h2,btnBorrar);
+    
+        const customPopup = new mapboxgl.Popup({
+          offset:25,
+          closeOnClick:true
+        }).setDOMContent(div);
+    
+        
+        element.setPopup(customPopup);
+
+        btnBorrar.addEventListener('click',()=>{
+          element.remove();
+          setMarkersRefs(newMarkersRefs);
+        });
+      } else {
+        newMarkersRefs.push(element);
+      }
     });
     setCoords(newCoords);
   }, [markersRefs]);
@@ -59,6 +85,7 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
   const onDragEnd = () => {
     const newCoords = [];
     markersRefs.forEach((element) => {
+      console.log(element)
       const lngLat = element.getLngLat();
       newCoords.push([lngLat.lng, lngLat.lat]);
     });
@@ -77,7 +104,23 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
     const marker = new mapboxgl.Marker({
       draggable: true,
     });
-    marker.setLngLat([lng, lat]).addTo(map.current);
+    // const h2 = document.createElement('h2');
+
+    // const btnBorrar = document.createElement('button');
+    // btnBorrar.innerText = 'Borrar';
+
+    // const div = document.createElement('div');
+    // div.append(h2,btnBorrar);
+
+    // const customPopup = new mapboxgl.Popup({
+    //   offset:25,
+    //   closeOnClick: true
+    // }).setDOMContent(div);
+    marker.setLngLat([lng, lat])/* .setPopup(customPopup) */.addTo(map.current);
+    // btnBorrar.addEventListener('click',()=>{
+    //   marker.remove();
+    // });
+    console.log(marker)
     setMarkersRefs([...markersRefs, marker]);
   };
 
@@ -85,7 +128,28 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
     const marker = new mapboxgl.Marker({
       draggable: false,
     });
-    marker.setLngLat([lngd, latd]).addTo(map.current);
+    // const h2 = document.createElement('h2');
+
+    // const btnBorrar = document.createElement('button');
+    // btnBorrar.innerText = 'Borrar';
+
+    // const div = document.createElement('div');
+    // div.append(h2,btnBorrar);
+
+    // const customPopup = new mapboxgl.Popup({
+    //   offset:25,
+    //   closeOnClick:false
+    // }).setDOMContent(div);
+
+    // const marker = new mapboxgl.Marker({
+    //   draggable: false,
+    // });
+    marker.setLngLat([lngd, latd])/* .setPopup(customPopup) */.addTo(map.current);
+
+    // btnBorrar.addEventListener('click',()=>{
+    //   marker.remove();
+    // });
+
     return marker;
   };
 
