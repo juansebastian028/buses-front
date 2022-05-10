@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Button, Popconfirm, Row, Col, Modal, Form, Input, Select, Space
+  Button, Popconfirm, Row, Col, Modal, Form, Input, Select, Space, Table
 } from 'antd';
-import  Table  from 'ant-responsive-table';
 import {
   clearActiveUser,
   getListUsers,
@@ -35,8 +34,8 @@ export const Users = () => {
     searchText: '',
     searchedColumn: '',
   });
-
-  const [userForm] = Form.useForm();
+  const searchInput = useRef(null);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     dispatch(getListUsers());
@@ -45,20 +44,20 @@ export const Users = () => {
 
   useEffect(() => {
     if (activeUser) {
-      userForm.setFieldsValue({
+      form.setFieldsValue({
         name: activeUser.name,
         email: activeUser.email,
         phone: activeUser.phone,
         rol: activeUser.rol,
       });
     } else {
-      userForm.setFieldsValue(initFormValues);
+      form.setFieldsValue(initFormValues);
     }
 
     return () => {
-      userForm.resetFields();
+      form.resetFields();
     };
-  }, [activeUser, userForm]);
+  }, [activeUser, form]);
 
   if (isLoading) {
     return <Spinner />;
@@ -100,7 +99,7 @@ export const Users = () => {
       <div style={{ padding: 8 }}>
         <Input
           ref={node => {
-            //this.searchInput = node;
+            searchInput.current = node;
           }}
           placeholder={`Buscar ${dataIndex}`}
           value={selectedKeys[0]}
@@ -131,7 +130,7 @@ export const Users = () => {
         : '',
     onFilterDropdownVisibleChange: visible => {
       if (visible) {
-        //setTimeout(() => this.searchInput.select(), 100);
+        setTimeout(() => searchInput.current.select(), 100);
       }
     },
     render: text =>
@@ -167,8 +166,6 @@ export const Users = () => {
       title: 'Nombre',
       dataIndex: 'name',
       key: 'name',
-      showOnResponse: true,
-      showOnDesktop: true,
       ...getColumnSearchProps('name')
     },
     {
@@ -183,16 +180,11 @@ export const Users = () => {
       title: 'Rol',
       dataIndex: 'rol',
       key: 'rol',
-      showOnResponse: true,
-      showOnDesktop: true,
+      responsive: ["md"],
       ...getColumnSearchProps('rol')
     },
     {
       title: 'Acciones',
-      dataIndex: 'uid',
-      key: 'id',
-      showOnResponse: true,
-      showOnDesktop: true,
       render: (id, user) => (
         <>
           <Button
@@ -236,7 +228,7 @@ export const Users = () => {
         width="600px"
       >
         <Form
-          form={userForm}
+          form={form}
           name="addUserForm"
           labelCol={{
             span: 4,
@@ -313,15 +305,7 @@ export const Users = () => {
           </Form.Item>
         </Form>
       </Modal>
-      <Table 
-        antTableProps={{
-          rowKey: "_id",
-          showHeader: true,
-          columns,
-          dataSource: users,
-          pagination: true
-        }}
-        mobileBreakPoint={768} rowKey="_id" />
+      <Table dataSource={users} columns={columns} rowKey="uid" />
     </>
   );
 };
