@@ -19,6 +19,7 @@ export const HeaderPage = ({ collapsed, toggle }) => {
   const { isLogged, currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const signOut = () => {
     dispatch(logout(navigate));
   };
@@ -91,6 +92,7 @@ export const HeaderPage = ({ collapsed, toggle }) => {
       )}
     </Menu>
   );
+
   return (
     <Header className="site-layout-background" style={{ padding: 0 }}>
       <Row justify="space-around">

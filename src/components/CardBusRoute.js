@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Avatar } from "antd";
-import { StarOutlined, StarFilled } from "@ant-design/icons";
+import { StarOutlined, StarFilled, CarOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -36,7 +36,7 @@ export const CardBusRoute = ({ busRoute }) => {
       <Link to={`/bus-route/${busRoute.uid}`}>
         <Meta
           avatar={
-            <Avatar src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Bus-logo.svg/768px-Bus-logo.svg.png" />
+            <Avatar icon={<CarOutlined />} />
           }
           title={busRoute.title}
           description={busRoute.description}

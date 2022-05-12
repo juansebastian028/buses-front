@@ -4,6 +4,7 @@ import { userReducer } from './userReducer';
 import { busRoutesReducer } from './busRoutesReducer';
 import { mapReducer } from './mapReducer';
 import { authReducer } from './authReducer';
+import { postReducer } from './postReducer';
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   busRoute: busRoutesReducer,
   map: mapReducer,
   auth: authReducer,
+  post: postReducer,
 });

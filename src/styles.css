@@ -1,3 +1,11 @@
+.ant-list-split .ant-list-item {
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.ant-list-split.ant-list-something-after-last-item .ant-spin-container > .ant-list-items > .ant-list-item:last-child {
+  border-bottom: 1px solid #d9d9d9;
+}
+
 .login-container {
   min-height: 100vh;
   background-color: #f0f2f5;

@@ -7,10 +7,13 @@ import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { Users } from "../pages/Users";
 import { MyAccount } from "../pages/MyAccount";
+import { Posts } from "../pages/Posts";
 import { MyFavoriteRoutes } from "../pages/MyFavoriteRoutes";
 import { useSelector } from "react-redux";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { PublicRoute } from "./PublicRoute";
+import { ViewPosts } from "../pages/ViewPosts";
+import { AboutUs } from "../pages/AboutUs";
 
 export const AppRouter = () => {
   const { currentUser, isLogged } = useSelector((state) => state.auth);
@@ -100,6 +103,38 @@ export const AppRouter = () => {
                 <MyFavoriteRoutes />
               </BasicLayout>
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-posts"
+          element={
+            <ProtectedRoute
+              isAllowed={
+                !!isLogged &&
+                (currentUser.rol === "ADMIN_ROLE" ||
+                  currentUser.rol === "COORDINATOR_ROLE")
+              }
+            >
+              <BasicLayout>
+                <Posts />
+              </BasicLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/posts"
+          element={
+            <BasicLayout>
+              <ViewPosts />
+            </BasicLayout>
+          }
+        />
+        <Route
+          path="/about-us"
+          element={
+            <BasicLayout>
+              <AboutUs />
+            </BasicLayout>
           }
         />
       </Routes>
