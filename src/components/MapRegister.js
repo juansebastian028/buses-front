@@ -22,10 +22,40 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
 
   useEffect(() => {
     const newCoords = [];
-    markersRefs.forEach((element) => {
+    const newMarkersRefs = [];
+    
+    markersRefs.forEach((element, index) => {
       const lngLat = element.getLngLat();
       newCoords.push([lngLat.lng, lngLat.lat]);
       element.on("dragend", onDragEnd);
+
+      if ( index == markersRefs.length - 1 ) {
+        const h2 = document.createElement('h2');
+
+        const btnBorrar = document.createElement('button');
+        btnBorrar.innerText = 'Borrar';
+    
+        const div = document.createElement('div');
+        div.append(h2,btnBorrar);
+    
+        const customPopup = new mapboxgl.Popup({
+          offset:25,
+          closeOnClick:true,
+          closeOnMove: true
+        }).setDOMContent(div);
+
+        element.setPopup(customPopup);
+
+        btnBorrar.addEventListener('click',()=>{
+          element.remove();
+          setMarkersRefs(newMarkersRefs);
+        });
+        element.setDraggable(true);
+      } else {
+        element.setPopup(null);
+        element.setDraggable(false);
+        newMarkersRefs.push(element);
+      }
     });
     setCoords(newCoords);
   }, [markersRefs]);
@@ -86,6 +116,7 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
       draggable: false,
     });
     marker.setLngLat([lngd, latd]).addTo(map.current);
+
     return marker;
   };
 
@@ -124,13 +155,6 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
   
         map.current.fitBounds([coords[0], coords[coords.length - 1]], {
           padding: 100,
-        });
-
-        map.current.on('click', 'route', (e) => {
-            // const features = map.current.queryRenderedFeatures(e.point, {
-            //   layers: ['counties']
-            // });
-            console.log(e)
         });
       });
     }
