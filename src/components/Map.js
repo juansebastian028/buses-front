@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import io from "socket.io-client";
 
 mapboxgl.accessToken =
@@ -22,8 +21,11 @@ export const Map = ({ coords }) => {
   }, [setSocket]);
 
   useEffect(() => {
+    buildMap();
+  });
+
+  useEffect(() => {
     if (coords.length && socket) {
-      buildMap();
       drawCoords(coords);
       socket.on("position", ({ coords }) => {
         console.log("Coords:", coords);
@@ -40,6 +42,7 @@ export const Map = ({ coords }) => {
       center: [lng, lat],
       zoom,
     });
+    map.current.addControl(new mapboxgl.FullscreenControl());
   };
 
   const drawCoords = (coords) => {
@@ -65,7 +68,7 @@ export const Map = ({ coords }) => {
           "line-cap": "round",
         },
         paint: {
-          "line-color": "red",
+          "line-color": "gray",
           "line-width": 5,
         },
       });

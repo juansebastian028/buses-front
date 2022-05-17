@@ -223,6 +223,7 @@ export const Posts = () => {
     },
     {
       title: "Publicado por",
+      responsive: ["md"],
       render: (_, post) => (post.user.name),      
     },
     {

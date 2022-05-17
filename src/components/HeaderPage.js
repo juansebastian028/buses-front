@@ -4,7 +4,7 @@ import { Layout, Avatar, Row, Col, Dropdown, Menu } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined,
+  UserOutlined
 } from "@ant-design/icons";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";

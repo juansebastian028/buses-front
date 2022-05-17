@@ -58,6 +58,10 @@ export const BusRoutes = () => {
           outward: activeBusRoute?.journeys?.outward,
           return: activeBusRoute?.journeys?.return,
         },
+        coords: {
+          outward: activeBusRoute?.coords?.outward,
+          return: activeBusRoute?.coords?.return,
+        }
       });
     } else {
       busRoutesForm.setFieldsValue(initFormValues);
@@ -290,7 +294,7 @@ export const BusRoutes = () => {
             <Input placeholder="Ingrese el número de la ruta" />
           </Form.Item>
           <Tabs defaultActiveKey="1">
-            <Tabs.TabPane tab="Ida" key="1">
+            <Tabs.TabPane tab="Ida" key="1" forceRender={true}>
               <Form.Item name={["journeys", "outward"]}>
                 <EditableTagGroup
                   handleTags={(tags) => handleTags("outward", tags)}
@@ -302,17 +306,17 @@ export const BusRoutes = () => {
                 />
               </Form.Item>
               <Form.Item name={["coords", "outward"]}>
-                <MapRegister
+                <MapRegister 
                   handleCoords={(coords) => handleCoords("outward", coords)}
-                  setOldCoords={
+                  previousCoords={
                     activeBusRoute?.coords?.outward
                       ? activeBusRoute.coords.outward
                       : []
-                  }
+                  } 
                 />
               </Form.Item>
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Vuelta" key="2">
+            <Tabs.TabPane tab="Vuelta" key="2" forceRender={true}>
               <Form.Item name={["journeys", "return"]}>
                 <EditableTagGroup
                   handleTags={(tags) => handleTags("return", tags)}
@@ -326,11 +330,11 @@ export const BusRoutes = () => {
               <Form.Item name={["coords", "return"]}>
                 <MapRegister
                   handleCoords={(coords) => handleCoords("return", coords)}
-                  setOldCoords={
+                  previousCoords={
                     activeBusRoute?.coords?.return
                       ? activeBusRoute.coords.return
                       : []
-                  }
+                  }  
                 />
               </Form.Item>
             </Tabs.TabPane>

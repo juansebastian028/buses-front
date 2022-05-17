@@ -1,76 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "antd";
 import mapboxgl from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoianVhbnNlYmFzdGlhbjI4IiwiYSI6ImNraDllZ3NpMDBpb2wyc3FpazE4dTl2bzAifQ.Hl0cvQVf_0jP-LEOFcGUWQ";
 
-export const MapRegister = ({ handleCoords, setOldCoords }) => {
+export const MapRegister = ({ handleCoords, previousCoords }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(-75.6946);
   const [lat, setLat] = useState(4.81321);
   const [zoom, setZoom] = useState(12);
-  const [markersRefs, setMarkersRefs] = useState([]);
   const [coords, setCoords] = useState([]);
 
   useEffect(() => {
     buildMap();
-  }, []);
-
-  useEffect(() => {
-    const newCoords = [];
-    const newMarkersRefs = [];
-    
-    markersRefs.forEach((element, index) => {
-      const lngLat = element.getLngLat();
-      newCoords.push([lngLat.lng, lngLat.lat]);
-      element.on("dragend", onDragEnd);
-
-      if ( index == markersRefs.length - 1 ) {
-        const h2 = document.createElement('h2');
-
-        const btnBorrar = document.createElement('button');
-        btnBorrar.innerText = 'Borrar';
-    
-        const div = document.createElement('div');
-        div.append(h2,btnBorrar);
-    
-        const customPopup = new mapboxgl.Popup({
-          offset:25,
-          closeOnClick:true,
-          closeOnMove: true
-        }).setDOMContent(div);
-
-        element.setPopup(customPopup);
-
-        btnBorrar.addEventListener('click',()=>{
-          element.remove();
-          setMarkersRefs(newMarkersRefs);
-        });
-        element.setDraggable(true);
-      } else {
-        element.setPopup(null);
-        element.setDraggable(false);
-        newMarkersRefs.push(element);
-      }
-    });
-    setCoords(newCoords);
-  }, [markersRefs]);
-
-  useEffect(() => {
-    handleSetOldCoords(setOldCoords);
-  }, [setOldCoords]);
+  });
 
   useEffect(() => {
     handleCoords(coords);
-    drawCoords();
-  }, [coords]);
+  }, [coords, handleCoords]);
 
   const buildMap = () => {
     if (map.current) return;
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v11",
@@ -84,87 +37,141 @@ export const MapRegister = ({ handleCoords, setOldCoords }) => {
     });
 
     map.current.addControl(geocoder, "top-left");
-  };
+    map.current.addControl(new mapboxgl.FullscreenControl());
 
-  const onDragEnd = () => {
-    const newCoords = [];
-    markersRefs.forEach((element) => {
-      const lngLat = element.getLngLat();
-      newCoords.push([lngLat.lng, lngLat.lat]);
-    });
-    setCoords(newCoords);
-  };
+    const geojson = {
+      type: "FeatureCollection",
+      features: [],
+    };
 
-  const handleSetOldCoords = (oldCoords) => {
-    const newMarkersRefs = [];
-    oldCoords.forEach((coord) => {
-      newMarkersRefs.push(addMaker(coord[0], coord[1]));
-    });
-    setMarkersRefs([...markersRefs, ...newMarkersRefs]);
-  }
+    const linestring = {
+      type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: [],
+      },
+    };
 
-  const addNewMaker = () => {
-    const marker = new mapboxgl.Marker({
-      draggable: true,
-    });
-    marker.setLngLat([lng, lat]).addTo(map.current);
-    setMarkersRefs([...markersRefs, marker]);
-  };
-
-  const addMaker = (lngd, latd) => {
-    const marker = new mapboxgl.Marker({
-      draggable: false,
-    });
-    marker.setLngLat([lngd, latd]).addTo(map.current);
-
-    return marker;
-  };
-
-  const drawCoords = () => {
-    if (map.current.getLayer('route')) map.current.removeLayer('route');
-    if (map.current.getSource('route')) map.current.removeSource('route');
-
-    if (coords.length) {
-      map.current.once("data", () => {
-        map.current.addSource("route", {
-          type: "geojson",
-          lineMetrics: true,
-          data: {
-            type: "Feature",
-            properties: {},
-            geometry: {
-              type: "LineString",
-              coordinates: coords,
-            },
+    if (previousCoords.length) {
+      previousCoords.forEach((coords) => {
+        const point = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [coords[0], coords[1]],
           },
-        });
-  
-        map.current.addLayer({
-          id: "route",
-          type: "line",
-          source: "route",
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
+          properties: {
+            id: String(new Date().getTime()),
           },
-          paint: {
-            "line-color": "red",
-            "line-width": 5,
-          },
+        };
+        const pixelCoords = map.current.project([coords[0], coords[1]]);
+
+        map.current.queryRenderedFeatures(pixelCoords, {
+          layers: ["measure-points"],
         });
-  
-        map.current.fitBounds([coords[0], coords[coords.length - 1]], {
-          padding: 100,
-        });
+
+        geojson.features.push(point);
       });
+      const foundCoords = geojson.features.map(
+        (feature) => feature.geometry.coordinates
+      );
+      setCoords(foundCoords);
+
+      if (geojson.features.length > 1) {
+        linestring.geometry.coordinates = geojson.features.map(
+          (point) => point.geometry.coordinates
+        );
+        geojson.features.push(linestring);
+      }
     }
+
+    map.current.on("load", () => {
+      map.current.addSource("geojson", {
+        type: "geojson",
+        data: geojson,
+      });
+
+      map.current.addLayer({
+        id: "measure-points",
+        type: "circle",
+        source: "geojson",
+        paint: {
+          "circle-radius": 5,
+          "circle-color": "#000",
+        },
+        filter: ["in", "$type", "Point"],
+      });
+
+      map.current.addLayer({
+        id: "measure-lines",
+        type: "line",
+        source: "geojson",
+        layout: {
+          "line-cap": "round",
+          "line-join": "round",
+        },
+        paint: {
+          "line-color": "#000",
+          "line-width": 2.5,
+        },
+        filter: ["in", "$type", "LineString"],
+      });
+
+      map.current.on("click", (e) => {
+        const features = map.current.queryRenderedFeatures(e.point, {
+          layers: ["measure-points"],
+        });
+
+        if (geojson.features.length > 1) geojson.features.pop();
+
+        if (features.length) {
+          const id = features[0].properties.id;
+          geojson.features = geojson.features.filter(
+            (point) => point.properties.id !== id
+          );
+        } else {
+          const point = {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [e.lngLat.lng, e.lngLat.lat],
+            },
+            properties: {
+              id: String(new Date().getTime()),
+            },
+          };
+
+          geojson.features.push(point);
+        }
+
+        if (geojson.features.length > 1) {
+          linestring.geometry.coordinates = geojson.features.map(
+            (point) => point.geometry.coordinates
+          );
+
+          geojson.features.push(linestring);
+        }
+        const foundCoords = geojson.features.map(
+          (feature) => feature.geometry.coordinates
+        );
+        setCoords(foundCoords[foundCoords.length - 1]);
+        map.current.getSource("geojson").setData(geojson);
+      });
+    });
+
+    map.current.on("mousemove", (e) => {
+      const features = map.current.queryRenderedFeatures(e.point, {
+        layers: ["measure-points"],
+      });
+
+      map.current.getCanvas().style.cursor = features.length
+        ? "pointer"
+        : "crosshair";
+    });
   };
 
   return (
     <>
-      <Button style={{ margin: "1rem 0" }} onClick={addNewMaker}>
-        Agregar nuevo marcador
-      </Button>
       <div ref={mapContainer} className="map-container" />
     </>
   );

@@ -172,8 +172,6 @@ export const Users = () => {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      showOnResponse: true,
-      showOnDesktop: true,
       ...getColumnSearchProps('email')
     },
     {
