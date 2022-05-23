@@ -12,27 +12,23 @@ export const Map = ({ coords }) => {
   const [lat, setLat] = useState(4.81321);
   const [zoom, setZoom] = useState(12);
   const markerDriver = useRef(null);
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    const newSocket = io(`http://${window.location.hostname}:8080`);
-    setSocket(newSocket);
-    return () => newSocket.close();
-  }, [setSocket]);
+  const socket = useRef(null);
 
   useEffect(() => {
     buildMap();
+    const newSocket = io(`http://${window.location.hostname}:8080`);
+    socket.current = newSocket;
+    socket.current.on("position", ({ coords }) => {
+      console.log("Coords:", coords);
+      addMarker(coords);
+    });
   });
 
   useEffect(() => {
-    if (coords.length && socket) {
+    if (coords.length) {
       drawCoords(coords);
-      socket.on("position", ({ coords }) => {
-        console.log("Coords:", coords);
-        addMarker(coords);
-      });
     }
-  }, [coords, socket]);
+  }, [coords]);
 
   const buildMap = () => {
     if (map.current) return;
@@ -77,7 +73,7 @@ export const Map = ({ coords }) => {
         padding: 100,
       });
 
-      socket.emit("find-driver", { points: coords });
+      socket.current.emit("find-driver", { points: coords });
       console.log(socket);
     });
   };
