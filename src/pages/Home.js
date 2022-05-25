@@ -63,7 +63,16 @@ export const Home = () => {
   };
 
   const onSearch = (value) => {
-    const busRoutesSearch = busRoutes.filter(busRoute => busRoute.number.includes(value) || busRoute.journeys.outward.includes(value) || busRoute.journeys.return.includes(value));
+    const busRoutesSearch = busRoutes.filter(
+      (busRoute) =>
+        busRoute.number.includes(value) ||
+        busRoute.journeys.outward
+          .map((journey) => journey.toLowerCase())
+          .includes(value.toLowerCase()) ||
+        busRoute.journeys.return
+          .map((journey) => journey.toLowerCase())
+          .includes(value.toLowerCase())
+    );
     const busRoutesFormatted = formatBusRoutes(busRoutesSearch);
     setBusRoutesFormat(busRoutesFormatted);
   };
