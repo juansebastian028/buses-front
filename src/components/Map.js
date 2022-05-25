@@ -19,7 +19,7 @@ export const Map = ({ coords }) => {
 
   useEffect(() => {
     buildMap();
-    const newSocket = io(`http://${window.location.hostname}:8080`);
+    const newSocket = io(process.env.REACT_APP_API_URL_SOCKET);
     socket.current = newSocket;
     socket.current.on("position", ({ coords }) => {
       console.log("Coords:", coords);
