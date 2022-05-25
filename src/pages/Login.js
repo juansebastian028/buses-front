@@ -32,14 +32,14 @@ export const Login = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your Email!",
+                message: "Por favor ingresa tu correo!",
               },
             ]}
           >
             <Input
               size="large"
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
+              placeholder="Usuario"
             />
           </Form.Item>
           <Form.Item
@@ -47,7 +47,7 @@ export const Login = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your Password!",
+                message: "Por favor ingresa tu contraseña!",
               },
             ]}
           >
@@ -55,7 +55,7 @@ export const Login = () => {
               size="large"
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
-              placeholder="Password"
+              placeholder="Contraseña"
             />
           </Form.Item>
           <Form.Item>
@@ -65,7 +65,7 @@ export const Login = () => {
               htmlType="submit"
               className="login-form-button"
             >
-              Log in
+              Ingresar
             </Button>
           </Form.Item>
         </Form>

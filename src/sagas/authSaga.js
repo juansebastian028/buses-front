@@ -46,7 +46,7 @@ function* loginWithGoogleSignIn({ payload, navigate }) {
 
 function* logout({ navigate }) {
   yield put({ type: authTypes.LOGOUT_SUCCESS });
-  navigate("/login");
+  navigate("/");
 }
 
 function* listRoles() {
