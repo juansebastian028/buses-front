@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Input, List } from "antd";
 import { getListBuses } from "../actions/busRoutes";
 import { CardBusRoute } from "../components/CardBusRoute";
+import { Spinner } from "../components/Spinner";
 
 const { Search } = Input;
 export const Home = () => {
   const dispatch = useDispatch();
   const { currentUser, isLogged } = useSelector((state) => state.auth);
   const [busRoutesFormat, setBusRoutesFormat] = useState([]);
-  const { busRoutes } = useSelector((state) => state.busRoute);
+  const { busRoutes, isLoading } = useSelector((state) => state.busRoute);
 
   useEffect(() => {
     dispatch(getListBuses());
@@ -49,6 +50,10 @@ export const Home = () => {
       setBusRoutesFormat(busRoutesFormatted);
     }
   }, [busRoutes, currentUser.favouritesBusRoutes, isLogged]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   const formatBusRoutes = (busRoutes) => {
     const busRoutesFormatted = busRoutes.map((busRoute) => {
